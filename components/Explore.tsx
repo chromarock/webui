@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { Market } from "../types";
 import { MarketCard } from "./MarketCard";

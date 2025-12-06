@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { generateMarketFromTopic } from "../services/geminiService";
 import { Market } from "../types";

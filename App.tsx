@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
 import { Layout } from "./components/Layout";
 import { Home } from "./components/Home";
@@ -226,6 +228,7 @@ function App() {
             onBack={() => setView(ViewState.HOME)}
             onTrade={handleTrade}
             onRequestLogin={() => setView(ViewState.LOGIN)}
+            theme={theme}
           />
         ) : null;
       case ViewState.LOGIN:

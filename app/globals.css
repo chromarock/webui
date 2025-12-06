@@ -1,0 +1,88 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brand-dark: 247 251 253;
+  --brand-darker: 238 245 247;
+  --brand-surface: 255 255 255;
+  --brand-border: 219 230 232;
+  --brand-accent: 241 153 63;
+  --brand-accent-2: 72 161 169;
+  --brand-accent-3: 216 73 57;
+  --text-primary: 15 32 24;
+  --text-secondary: 59 74 67;
+  --text-tertiary: 107 119 111;
+  --bg-grad-1: #fbe8d3;
+  --bg-grad-2: #e0f2f4;
+  --bg-grad-3: #f6fbfc;
+  --scroll-track: #f1f5f7;
+  --scroll-thumb: #cbd6d9;
+  --scroll-thumb-hover: #48a1a9;
+}
+
+.dark {
+  --brand-dark: 30 30 32;
+  --brand-darker: 24 24 26;
+  --brand-surface: 40 40 44;
+  --brand-border: 63 63 70;
+  --brand-accent: 241 153 63;
+  --brand-accent-2: 72 161 169;
+  --brand-accent-3: 216 73 57;
+  --text-primary: 240 244 247;
+  --text-secondary: 196 204 210;
+  --text-tertiary: 146 152 160;
+  --bg-grad-1: #26272b;
+  --bg-grad-2: #1f2024;
+  --bg-grad-3: #1c1d20;
+  --scroll-track: #15161a;
+  --scroll-thumb: #2d2f34;
+  --scroll-thumb-hover: #3b3e45;
+}
+
+body {
+  background: #ffffff;
+  color: rgb(var(--text-primary));
+  min-height: 100vh;
+  padding: 0;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}
+
+.dark body {
+  background: rgb(var(--brand-darker));
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scroll-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scroll-thumb);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scroll-thumb-hover);
+}
+
+.font-mono-numbers {
+  font-variant-numeric: tabular-nums;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+

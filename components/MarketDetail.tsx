@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
 import { Market, User } from "../types";
 import { MarketChart } from "./MarketChart";
@@ -23,6 +25,7 @@ interface MarketDetailProps {
     cost: number
   ) => void;
   onRequestLogin: () => void;
+  theme?: "light" | "dark";
 }
 
 export const MarketDetail: React.FC<MarketDetailProps> = ({
@@ -31,7 +34,16 @@ export const MarketDetail: React.FC<MarketDetailProps> = ({
   onBack,
   onTrade,
   onRequestLogin,
+  theme = "dark",
 }) => {
+  const isDark = theme === "dark";
+  const history = market.history || [];
+  const currentPrice =
+    history.length > 0 ? history[history.length - 1] : market.probability;
+  const startPrice = history.length > 0 ? history[0] : market.probability;
+  const priceDelta = currentPrice - startPrice;
+  const priceDeltaPct =
+    startPrice === 0 ? 0 : ((priceDelta / startPrice) * 100).toFixed(1);
   const [outcome, setOutcome] = useState<"YES" | "NO">("YES");
   const [amount, setAmount] = useState<string>("");
   const [activeTab, setActiveTab] = useState<"Overview" | "Activity">(
@@ -210,29 +222,94 @@ export const MarketDetail: React.FC<MarketDetailProps> = ({
         {/* CENTER COLUMN: Chart & Content (6 cols) */}
         <div className="lg:col-span-6 space-y-6">
           {/* Chart Container */}
-          <div className="h-[400px] bg-brand-surface border border-brand-border rounded-2xl p-6 relative overflow-hidden group shadow-sm">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-accent to-emerald-400 opacity-70"></div>
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-sm font-medium text-text-secondary">
-                Price History (Implied Probability)
-              </h3>
-              <div className="flex gap-2">
-                {["1H", "1D", "1W", "All"].map((t) => (
-                  <button
-                    key={t}
-                    className="px-2 py-1 text-xs rounded hover:bg-brand-darker text-text-tertiary hover:text-text-primary transition-colors"
+          <div
+            className={`h-[430px] relative overflow-hidden rounded-2xl border shadow-xl select-none ${
+              isDark
+                ? "border-brand-border bg-gradient-to-br from-brand-surface/80 via-brand-darker/70 to-brand-surface/60"
+                : "border-brand-border/80 bg-gradient-to-br from-white via-brand-surface to-white"
+            }`}
+          >
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(59,130,246,0.12),transparent_35%),radial-gradient(circle_at_80%_0%,rgba(16,185,129,0.12),transparent_30%),radial-gradient(circle_at_50%_80%,rgba(236,72,153,0.10),transparent_35%)] pointer-events-none" />
+            <div
+              className={`absolute inset-4 rounded-2xl backdrop-blur-sm ${
+                isDark ? "border border-white/5" : "border border-black/5"
+              }`}
+            />
+
+            <div className="relative h-full p-6 flex flex-col gap-4">
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="px-3 py-1 rounded-full text-xs font-semibold bg-black/10 border border-white/10 text-text-primary">
+                    Price History · Implied Probability
+                  </div>
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs font-semibold border ${
+                      priceDelta >= 0
+                        ? "bg-emerald-500/10 text-emerald-300 border-emerald-400/40"
+                        : "bg-rose-500/10 text-rose-300 border-rose-400/40"
+                    }`}
                   >
-                    {t}
-                  </button>
-                ))}
+                    {priceDelta >= 0 ? "Bullish" : "Bearish"} ·{" "}
+                    {Math.abs(priceDelta).toFixed(1)}pts
+                  </span>
+                </div>
+                <div className="flex gap-2">
+                  {["1H", "1D", "1W", "All"].map((t) => (
+                    <button
+                      key={t}
+                      className={`px-3 py-1.5 text-xs rounded-full border transition-all ${
+                        isDark
+                          ? "border-white/10 bg-white/5 text-text-secondary hover:text-text-primary hover:border-brand-accent/60"
+                          : "border-black/10 bg-black/5 text-text-secondary hover:text-text-primary hover:border-brand-accent/60"
+                      }`}
+                    >
+                      {t}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex items-center gap-6">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-4xl font-mono font-bold text-text-primary">
+                    {currentPrice.toFixed(1)}%
+                  </span>
+                  <span
+                    className={`text-sm font-semibold ${
+                      priceDelta >= 0 ? "text-emerald-300" : "text-rose-300"
+                    }`}
+                  >
+                    {priceDelta >= 0 ? "+" : "-"}
+                    {Math.abs(priceDelta).toFixed(1)} ({priceDeltaPct}%)
+                  </span>
+                </div>
+                <div className="text-xs text-text-secondary">
+                  From {startPrice.toFixed(1)}% start · {history.length} pts
+                </div>
+              </div>
+
+              <div
+                className={`relative flex-1 rounded-xl border backdrop-blur-sm overflow-hidden ${
+                  isDark
+                    ? "border-white/5 bg-black/10"
+                    : "border-black/10 bg-white/60"
+                }`}
+              >
+                <div
+                  className={`absolute inset-0 bg-[length:20px_100%,100%_20px] ${
+                    isDark
+                      ? "opacity-[0.05] bg-[linear-gradient(to_right,transparent_95%,white_95%),linear-gradient(to_bottom,transparent_95%,white_95%)]"
+                      : "opacity-40 bg-[linear-gradient(to_right,transparent_96%,rgba(0,0,0,0.08)_96%),linear-gradient(to_bottom,transparent_96%,rgba(0,0,0,0.08)_96%)]"
+                  }`}
+                />
+                <MarketChart
+                  data={history}
+                  height={280}
+                  showGradient={true}
+                  strokeWidth={3}
+                />
               </div>
             </div>
-            <MarketChart
-              data={market.history}
-              height={320}
-              showGradient={true}
-              strokeWidth={3}
-            />
           </div>
 
           {/* Tabs */}

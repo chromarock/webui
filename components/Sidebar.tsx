@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { ViewState } from "../types";
 import { Home, Compass, Users, PieChart, LogOut, Settings } from "lucide-react";

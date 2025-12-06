@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useRef, useEffect } from "react";
 import { Market, ChatMessage } from "../types";
 import { chatAboutMarket } from "../services/geminiService";
@@ -59,7 +61,9 @@ export const MarketChat: React.FC<MarketChatProps> = ({ market }) => {
           <span className="w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse"></span>
           Chromarock AI Assistant
         </h3>
-        <p className="text-xs text-text-tertiary">Ask about "{market.title}"</p>
+        <p className="text-xs text-text-tertiary">
+          Ask about {`"${market.title}"`}
+        </p>
       </div>
 
       <div

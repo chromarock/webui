@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Market } from "../types";
 import { MarketChart } from "./MarketChart";
