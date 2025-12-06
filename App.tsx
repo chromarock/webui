@@ -456,6 +456,9 @@ function App() {
             user={user}
             onMarketClick={handleMarketClick}
             onExplore={() => setView(ViewState.EXPLORE)}
+            searchTerm={homeSearchTerm}
+            activeTopic={homeActiveTopic}
+            onQuickTrade={handleQuickTrade}
           />
         );
     }

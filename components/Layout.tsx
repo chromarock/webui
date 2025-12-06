@@ -7,6 +7,7 @@ import React, {
   useEffect,
   useCallback,
 } from "react";
+import Image from "next/image";
 import { ViewState, User } from "../types";
 import {
   Search,
@@ -142,10 +143,13 @@ export const Layout: React.FC<LayoutProps> = ({
                 onClick={() => onChangeView(ViewState.HOME)}
               >
                 <div className="w-9 h-9 rounded-full bg-gradient-to-br from-chroma-blue to-cyan-400 border border-brand-border shadow-lg overflow-hidden flex items-center justify-center">
-                  <img
-                    src="/assets/Screenshot_2025-12-06_at_12.31.00_AM-0e9c5967-ffd9-4454-9923-9e7b89239380.png"
+                  <Image
+                    src="/assets/rock.png"
                     alt="Chromarock logo"
+                    width={36}
+                    height={36}
                     className="w-full h-full object-cover"
+                    priority
                   />
                 </div>
                 <span className="text-lg font-bold text-text-primary tracking-tight hidden sm:inline">

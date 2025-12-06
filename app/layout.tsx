@@ -4,6 +4,9 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Chromarock",
   description: "Prediction market dashboard",
+  icons: {
+    icon: "/assets/rock.png",
+  },
 };
 
 export default function RootLayout({
@@ -17,4 +20,3 @@ export default function RootLayout({
     </html>
   );
 }
-
