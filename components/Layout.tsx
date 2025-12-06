@@ -46,6 +46,8 @@ export const Layout: React.FC<LayoutProps> = ({
 }) => {
   const isDark = theme === "dark";
   const isHome = currentView === ViewState.HOME;
+  const contentWidthClass =
+    currentView === ViewState.PORTFOLIO ? "max-w-5xl" : "max-w-7xl";
   const navItems = [
     { label: "Home", view: ViewState.HOME },
     { label: "Explore", view: ViewState.EXPLORE },
@@ -278,7 +280,7 @@ export const Layout: React.FC<LayoutProps> = ({
         </header>
 
         {/* Content */}
-        <main className="flex-1 overflow-x-hidden px-4 sm:px-6 lg:px-8 pb-8">
+        <main className="flex-1 overflow-x-hidden pb-8">
           {isHome && (
             <div>
               <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2">
@@ -363,7 +365,11 @@ export const Layout: React.FC<LayoutProps> = ({
               </div>
             </div>
           )}
-          <div className="pt-2 sm:pt-3 lg:pt-4">{children}</div>
+          <div
+            className={`pt-2 sm:pt-3 lg:pt-4 px-4 sm:px-6 lg:px-8 pb-8 w-full ${contentWidthClass} mx-auto`}
+          >
+            {children}
+          </div>
         </main>
       </div>
     </div>

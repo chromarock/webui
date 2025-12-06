@@ -10,12 +10,14 @@ interface FriendsProps {
   markets: Market[];
   onMarketClick: (market: Market) => void;
   onCreate: () => void;
+  onQuickTrade?: (market: Market, outcome: "YES" | "NO") => void;
 }
 
 export const Friends: React.FC<FriendsProps> = ({
   markets,
   onMarketClick,
   onCreate,
+  onQuickTrade,
 }) => {
   const socialMarkets = markets.filter((m) => m.type === "social");
 
@@ -48,6 +50,7 @@ export const Friends: React.FC<FriendsProps> = ({
               key={market.id}
               market={market}
               onClick={onMarketClick}
+              onQuickTrade={onQuickTrade}
             />
           ))
         ) : (

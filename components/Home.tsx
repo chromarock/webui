@@ -13,6 +13,7 @@ interface HomeProps {
   onExplore: () => void;
   searchTerm: string;
   activeTopic: string;
+  onQuickTrade: (market: Market, outcome: "YES" | "NO") => void;
 }
 
 export const Home: React.FC<HomeProps> = ({
@@ -22,6 +23,7 @@ export const Home: React.FC<HomeProps> = ({
   onExplore,
   searchTerm,
   activeTopic,
+  onQuickTrade,
 }) => {
   const filtered = markets
     .filter((m) => m.type === "global")
@@ -37,7 +39,7 @@ export const Home: React.FC<HomeProps> = ({
     );
 
   return (
-    <div className="max-w-7xl mx-auto space-y-8 animate-fade-in px-4 sm:px-6 lg:px-8">
+    <div className="max-w-7xl mx-auto space-y-8 animate-fade-in">
       {/* Hero / Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="md:col-span-2 bg-brand-surface border border-brand-border rounded-3xl p-6 relative overflow-hidden group shadow-[0_24px_60px_rgba(0,0,0,0.35)]">
@@ -121,6 +123,7 @@ export const Home: React.FC<HomeProps> = ({
               key={market.id}
               market={market}
               onClick={onMarketClick}
+              onQuickTrade={onQuickTrade}
             />
           ))}
         </div>

@@ -8,12 +8,20 @@ import { LayoutGrid, List as ListIcon, Search } from "lucide-react";
 interface ExploreProps {
   markets: Market[];
   onMarketClick: (market: Market) => void;
+  onQuickTrade: (market: Market, outcome: "YES" | "NO") => void;
 }
 
-export const Explore: React.FC<ExploreProps> = ({ markets, onMarketClick }) => {
+export const Explore: React.FC<ExploreProps> = ({
+  markets,
+  onMarketClick,
+  onQuickTrade,
+}) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("All");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [sortBy, setSortBy] = useState<
+    "relevance" | "volume" | "probability" | "endingSoon"
+  >("relevance");
 
   const categories = [
     "All",
@@ -32,6 +40,19 @@ export const Explore: React.FC<ExploreProps> = ({ markets, onMarketClick }) => {
     const matchesCategory =
       categoryFilter === "All" || m.category === categoryFilter;
     return matchesSearch && matchesCategory && m.type === "global";
+  });
+
+  const sortedMarkets = [...filteredMarkets].sort((a, b) => {
+    switch (sortBy) {
+      case "volume":
+        return b.volume - a.volume;
+      case "probability":
+        return b.probability - a.probability;
+      case "endingSoon":
+        return new Date(a.endDate).getTime() - new Date(b.endDate).getTime();
+      default:
+        return 0;
+    }
   });
 
   return (
@@ -76,27 +97,43 @@ export const Explore: React.FC<ExploreProps> = ({ markets, onMarketClick }) => {
           ))}
         </div>
 
-        <div className="flex bg-brand-surface border border-brand-border rounded-lg p-1 shadow-inner">
-          <button
-            onClick={() => setViewMode("grid")}
-            className={`p-1.5 rounded ${
-              viewMode === "grid"
-                ? "bg-brand-border text-text-primary"
-                : "text-text-tertiary hover:text-text-primary"
-            }`}
-          >
-            <LayoutGrid size={16} />
-          </button>
-          <button
-            onClick={() => setViewMode("list")}
-            className={`p-1.5 rounded ${
-              viewMode === "list"
-                ? "bg-brand-border text-text-primary"
-                : "text-text-tertiary hover:text-text-primary"
-            }`}
-          >
-            <ListIcon size={16} />
-          </button>
+        <div className="flex items-center gap-3">
+          <div className="bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-text-secondary shadow-inner">
+            <label className="mr-2 font-semibold">Sort</label>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
+              className="bg-transparent focus:outline-none text-text-primary text-xs"
+            >
+              <option value="relevance">Relevance</option>
+              <option value="volume">Volume</option>
+              <option value="probability">Prob %</option>
+              <option value="endingSoon">Ending soon</option>
+            </select>
+          </div>
+
+          <div className="flex bg-brand-surface border border-brand-border rounded-lg p-1 shadow-inner">
+            <button
+              onClick={() => setViewMode("grid")}
+              className={`p-1.5 rounded ${
+                viewMode === "grid"
+                  ? "bg-brand-border text-text-primary"
+                  : "text-text-tertiary hover:text-text-primary"
+              }`}
+            >
+              <LayoutGrid size={16} />
+            </button>
+            <button
+              onClick={() => setViewMode("list")}
+              className={`p-1.5 rounded ${
+                viewMode === "list"
+                  ? "bg-brand-border text-text-primary"
+                  : "text-text-tertiary hover:text-text-primary"
+              }`}
+            >
+              <ListIcon size={16} />
+            </button>
+          </div>
         </div>
       </div>
 
@@ -108,13 +145,14 @@ export const Explore: React.FC<ExploreProps> = ({ markets, onMarketClick }) => {
             : "space-y-3"
         }
       >
-        {filteredMarkets.length > 0 ? (
-          filteredMarkets.map((market) =>
+        {sortedMarkets.length > 0 ? (
+          sortedMarkets.map((market) =>
             viewMode === "grid" ? (
               <MarketCard
                 key={market.id}
                 market={market}
                 onClick={onMarketClick}
+                onQuickTrade={onQuickTrade}
               />
             ) : (
               // Simple List Item
@@ -146,6 +184,26 @@ export const Explore: React.FC<ExploreProps> = ({ markets, onMarketClick }) => {
                   <span className="text-xs text-text-tertiary">
                     Vol: ${(market.volume / 1000).toFixed(0)}k
                   </span>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onQuickTrade(market, "YES");
+                      }}
+                      className="text-[11px] font-semibold px-3 py-1 rounded-full bg-market-yes/10 text-market-yes border border-market-yes/40 hover:bg-market-yes/20"
+                    >
+                      Quick Yes
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onQuickTrade(market, "NO");
+                      }}
+                      className="text-[11px] font-semibold px-3 py-1 rounded-full bg-market-no/10 text-market-no border border-market-no/40 hover:bg-market-no/20"
+                    >
+                      Quick No
+                    </button>
+                  </div>
                 </div>
               </div>
             )

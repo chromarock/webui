@@ -266,6 +266,7 @@ const INITIAL_USER: User = {
 };
 
 type ThemeMode = "light" | "dark";
+const QUICK_TRADE_COST = 10;
 
 function App() {
   const [view, setView] = useState<ViewState>(ViewState.HOME);
@@ -373,6 +374,17 @@ function App() {
     });
   };
 
+  const handleQuickTrade = (market: Market, outcome: "YES" | "NO") => {
+    if (!user.isLoggedIn) {
+      setView(ViewState.LOGIN);
+      return;
+    }
+    const price =
+      outcome === "YES" ? market.probability : 100 - market.probability;
+    const shares = Math.max(1, Math.floor(QUICK_TRADE_COST / (price / 100)));
+    handleTrade(market.id, outcome, shares, QUICK_TRADE_COST);
+  };
+
   // View Routing
   const renderContent = () => {
     switch (view) {
@@ -385,16 +397,24 @@ function App() {
             onExplore={() => setView(ViewState.EXPLORE)}
             searchTerm={homeSearchTerm}
             activeTopic={homeActiveTopic}
+            onQuickTrade={handleQuickTrade}
           />
         );
       case ViewState.EXPLORE:
-        return <Explore markets={markets} onMarketClick={handleMarketClick} />;
+        return (
+          <Explore
+            markets={markets}
+            onMarketClick={handleMarketClick}
+            onQuickTrade={handleQuickTrade}
+          />
+        );
       case ViewState.FRIENDS:
         return (
           <Friends
             markets={markets}
             onMarketClick={handleMarketClick}
             onCreate={() => setView(ViewState.CREATE)}
+            onQuickTrade={handleQuickTrade}
           />
         );
       case ViewState.PORTFOLIO:

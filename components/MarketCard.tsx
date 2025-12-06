@@ -14,9 +14,14 @@ import {
 interface MarketCardProps {
   market: Market;
   onClick: (market: Market) => void;
+  onQuickTrade?: (market: Market, outcome: "YES" | "NO") => void;
 }
 
-export const MarketCard: React.FC<MarketCardProps> = ({ market, onClick }) => {
+export const MarketCard: React.FC<MarketCardProps> = ({
+  market,
+  onClick,
+  onQuickTrade,
+}) => {
   const isSocial = market.type === "social";
   const isUp = market.history[market.history.length - 1] >= market.history[0];
   const yesProb = market.probability;
@@ -38,7 +43,7 @@ export const MarketCard: React.FC<MarketCardProps> = ({ market, onClick }) => {
             {primaryTag?.charAt(0) || "M"}
           </div>
           <div className="space-y-1">
-            <div className="flex flex-wrap gap-2">
+            <div className="hidden">
               <span className="px-2 py-0.5 text-[10px] uppercase tracking-wider font-bold rounded-full bg-brand-darker text-text-secondary border border-brand-border">
                 {primaryTag}
               </span>
@@ -110,6 +115,29 @@ export const MarketCard: React.FC<MarketCardProps> = ({ market, onClick }) => {
             </span>
           </div>
         </div>
+
+        {onQuickTrade && (
+          <div className="flex gap-2 pt-3">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onQuickTrade(market, "YES");
+              }}
+              className="flex-1 text-xs font-semibold px-3 py-2 rounded-lg bg-market-yes/10 text-market-yes border border-market-yes/40 hover:bg-market-yes/20 transition-colors"
+            >
+              Quick Yes
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onQuickTrade(market, "NO");
+              }}
+              className="flex-1 text-xs font-semibold px-3 py-2 rounded-lg bg-market-no/10 text-market-no border border-market-no/40 hover:bg-market-no/20 transition-colors"
+            >
+              Quick No
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Footer / AI Insight */}
