@@ -7,6 +7,7 @@ import React, {
   useEffect,
   useCallback,
 } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import { ViewState, User } from "../types";
 import {
@@ -15,6 +16,12 @@ import {
   Bookmark,
   SlidersHorizontal,
   TrendingUp,
+  Home as HomeIcon,
+  Compass,
+  Users,
+  Briefcase,
+  Plus,
+  Menu,
 } from "lucide-react";
 import { Button } from "./Button";
 
@@ -55,6 +62,15 @@ export const Layout: React.FC<LayoutProps> = ({
     { label: "Friends", view: ViewState.FRIENDS },
     { label: "Portfolio", view: ViewState.PORTFOLIO },
   ];
+  const mobileNavItems = useMemo(
+    () => [
+      { label: "Home", view: ViewState.HOME, icon: HomeIcon },
+      { label: "Explore", view: ViewState.EXPLORE, icon: Compass },
+      { label: "Portfolio", view: ViewState.PORTFOLIO, icon: Briefcase },
+      { label: "Friends", view: ViewState.FRIENDS, icon: Users },
+    ],
+    []
+  );
   const homeTopics = useMemo(
     () => [
       "For you",
@@ -73,8 +89,11 @@ export const Layout: React.FC<LayoutProps> = ({
     []
   );
   const pillScrollerRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const newsNavItems = useMemo(
     () => [
       "Trending",
@@ -120,6 +139,24 @@ export const Layout: React.FC<LayoutProps> = ({
     };
   }, [updatePillScrollState]);
 
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!isMenuOpen) return;
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isMenuOpen]);
+
   return (
     <div className="min-h-screen text-text-primary font-sans selection:bg-brand-accent/20 flex justify-center">
       <div
@@ -136,7 +173,7 @@ export const Layout: React.FC<LayoutProps> = ({
           }`}
         >
           <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 flex flex-col gap-3">
-            <div className="flex items-center gap-3 w-full">
+            <div className="flex items-center gap-3 sm:gap-4 w-full flex-nowrap">
               {/* Logo / Home */}
               <div
                 className="flex items-center gap-3 pr-2 shrink-0 cursor-pointer"
@@ -152,7 +189,7 @@ export const Layout: React.FC<LayoutProps> = ({
                     priority
                   />
                 </div>
-                <span className="text-lg font-bold text-text-primary tracking-tight hidden sm:inline">
+                <span className="text-lg font-bold text-text-primary tracking-tight">
                   Chromarock
                 </span>
               </div>
@@ -180,8 +217,41 @@ export const Layout: React.FC<LayoutProps> = ({
               </div>
 
               {/* Search + Filters */}
-              <div className="flex items-center gap-2 flex-1 min-w-[260px]">
-                <div className="flex items-center bg-brand-surface border border-brand-border rounded-full px-3 py-2 shadow-inner w-full">
+              {/* Mobile Auth (replaces search) */}
+              <div className="flex items-center gap-2 sm:hidden ml-auto flex-shrink-0">
+                {user.isLoggedIn ? (
+                  <>
+                    <span className="text-xs font-semibold text-text-secondary">
+                      ${user.balance.toFixed(0)}
+                    </span>
+                    <button
+                      onClick={onLogout}
+                      className="text-xs font-semibold px-3 py-1.5 rounded-full border border-brand-border bg-brand-surface text-text-primary hover:border-brand-accent transition-colors"
+                    >
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => onChangeView(ViewState.LOGIN)}
+                      className="text-xs font-semibold px-3 py-1.5 rounded-full border border-brand-border bg-brand-surface text-text-secondary hover:text-text-primary hover:border-brand-accent transition-colors flex-none"
+                    >
+                      Log In
+                    </button>
+                    <button
+                      onClick={() => onChangeView(ViewState.SIGNUP)}
+                      className="text-xs font-semibold px-3 py-1.5 rounded-full bg-brand-accent text-white border border-brand-border/70 hover:opacity-95 transition-opacity flex-none"
+                    >
+                      Sign Up
+                    </button>
+                  </>
+                )}
+              </div>
+
+              {/* Search (hidden on mobile) */}
+              <div className="hidden sm:flex items-center gap-2 flex-1 min-w-0 w-full sm:w-auto flex-wrap sm:flex-nowrap">
+                <div className="flex items-center bg-brand-surface border border-brand-border rounded-full px-3 py-2 shadow-inner w-full sm:flex-1 min-w-0">
                   <Search size={16} className="text-text-tertiary mr-2" />
                   <input
                     type="text"
@@ -189,12 +259,6 @@ export const Layout: React.FC<LayoutProps> = ({
                     className="w-full bg-transparent text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none"
                   />
                 </div>
-                <button className="p-2.5 rounded-full border border-brand-border bg-brand-surface text-text-secondary hover:text-text-primary hover:border-brand-accent transition-colors shadow-sm">
-                  <SlidersHorizontal size={18} />
-                </button>
-                <button className="p-2.5 rounded-full border border-brand-border bg-brand-surface text-text-secondary hover:text-text-primary hover:border-brand-accent transition-colors shadow-sm">
-                  <Bookmark size={18} />
-                </button>
               </div>
 
               {/* Right Actions */}
@@ -248,18 +312,48 @@ export const Layout: React.FC<LayoutProps> = ({
                 <Button variant="pill" size="sm">
                   Connect Wallet
                 </Button>
-                <Button onClick={onToggleTheme} size="sm" variant="ghost">
-                  {theme === "dark" ? "☀️ Light" : "🌙 Dark"}
-                </Button>
+                <div className="relative" ref={dropdownRef}>
+                  <Button
+                    onClick={() => setIsMenuOpen((open) => !open)}
+                    size="sm"
+                    variant="ghost"
+                    aria-label="Open menu"
+                    className="px-2 py-2"
+                  >
+                    <Menu size={18} />
+                  </Button>
+                  {isMenuOpen && (
+                    <div className="absolute right-0 mt-2 w-48 rounded-xl border border-brand-border bg-brand-surface shadow-xl backdrop-blur-md p-1 z-50">
+                      <button
+                        onClick={() => {
+                          setIsMenuOpen(false);
+                          onChangeView(ViewState.EXPLORE);
+                        }}
+                        className="w-full text-left px-3 py-2 rounded-lg text-sm text-text-primary hover:bg-brand-darker transition-colors"
+                      >
+                        Leaderboard
+                      </button>
+                      <button
+                        onClick={() => {
+                          setIsMenuOpen(false);
+                          onToggleTheme();
+                        }}
+                        className="w-full text-left px-3 py-2 rounded-lg text-sm text-text-primary hover:bg-brand-darker transition-colors"
+                      >
+                        {theme === "dark" ? "Light mode" : "Dark mode"}
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-            <div className="flex items-center gap-4 text-sm text-text-secondary">
-              <TrendingUp size={16} className="text-text-primary" />
+            <div className="flex items-center gap-4 flex-nowrap text-sm text-text-secondary overflow-x-auto scrollbar-hide w-full pb-1">
+              <TrendingUp size={16} className="text-text-primary shrink-0" />
               {newsNavItems.map((item) =>
                 item === "|" ? (
                   <span
                     key="divider"
-                    className="h-4 w-px bg-brand-border inline-block"
+                    className="h-4 w-px bg-brand-border inline-block shrink-0"
                   />
                 ) : (
                   <button
@@ -284,7 +378,7 @@ export const Layout: React.FC<LayoutProps> = ({
         </header>
 
         {/* Content */}
-        <main className="flex-1 overflow-x-hidden pb-8">
+        <main className="flex-1 overflow-x-hidden pb-36 sm:pb-16 lg:pb-10">
           {isHome && (
             <div>
               <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2">
@@ -375,6 +469,72 @@ export const Layout: React.FC<LayoutProps> = ({
             {children}
           </div>
         </main>
+
+        {/* Mobile Bottom Nav */}
+        {isMounted &&
+          createPortal(
+            <nav
+              className="lg:hidden fixed bottom-0 left-0 right-0 z-50 px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-2"
+              aria-label="Primary navigation"
+            >
+              <div
+                className={`w-full max-w-md mx-auto px-3 py-2 rounded-full border border-brand-border shadow-xl backdrop-blur-lg flex items-center gap-2 ${
+                  isDark ? "bg-brand-darker/90" : "bg-white/95"
+                }`}
+              >
+                {mobileNavItems.slice(0, 2).map((item) => {
+                  const active = currentView === item.view;
+                  const Icon = item.icon;
+                  return (
+                    <button
+                      key={item.view}
+                      onClick={() => onChangeView(item.view)}
+                      className={`flex-1 flex flex-col items-center gap-1 py-2 rounded-2xl text-[11px] font-semibold transition-colors ${
+                        active
+                          ? isDark
+                            ? "text-white bg-brand-surface/10 border border-brand-border/70"
+                            : "text-text-primary bg-brand-darker/70 border border-brand-border/70"
+                          : "text-text-secondary hover:text-text-primary"
+                      }`}
+                    >
+                      <Icon size={18} />
+                      <span>{item.label}</span>
+                    </button>
+                  );
+                })}
+
+                <button
+                  onClick={() => onChangeView(ViewState.CREATE)}
+                  className="flex items-center justify-center bg-brand-accent text-white rounded-full h-11 w-11 shadow-lg border border-brand-border/70"
+                  aria-label="Create market"
+                >
+                  <Plus size={18} />
+                </button>
+
+                {mobileNavItems.slice(2).map((item) => {
+                  const active = currentView === item.view;
+                  const Icon = item.icon;
+                  return (
+                    <button
+                      key={item.view}
+                      onClick={() => onChangeView(item.view)}
+                      className={`flex-1 flex flex-col items-center gap-1 py-2 rounded-2xl text-[11px] font-semibold transition-colors ${
+                        active
+                          ? isDark
+                            ? "text-white bg-brand-surface/10 border border-brand-border/70"
+                            : "text-text-primary bg-brand-darker/70 border border-brand-border/70"
+                          : "text-text-secondary hover:text-text-primary"
+                      }`}
+                    >
+                      <Icon size={18} />
+                      <span>{item.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </nav>,
+            document.body
+          )}
       </div>
     </div>
   );
