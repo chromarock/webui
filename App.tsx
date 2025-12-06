@@ -65,6 +65,195 @@ const INITIAL_MARKETS: Market[] = [
     type: "social",
     creator: "Alex M.",
   },
+  {
+    id: "4",
+    title: "US presidential approval above 50% in June 2025",
+    description:
+      "Will the sitting US president record a Gallup approval rating above 50% at any point in June 2025?",
+    imageUrl: "https://picsum.photos/400/300?grayscale&random=4",
+    probability: 41,
+    volume: 780000,
+    category: "Politics",
+    endDate: "2025-06-30",
+    history: [33, 35, 34, 37, 39, 41],
+    isAiGenerated: true,
+    type: "global",
+    aiInsight:
+      "Soft-landing narrative is helping sentiment, but border policy noise keeps upside capped.",
+    bullCase: [
+      "Inflation keeps easing",
+      "Foreign policy wins boost favorables",
+    ],
+    bearCase: [
+      "Persistent cost of living",
+      "Hill gridlock dominates headlines",
+    ],
+  },
+  {
+    id: "5",
+    title: "OpenAI ships GPT-5 API by August 2025",
+    description:
+      "Will OpenAI publicly release a GPT-5 API endpoint for developers before August 31, 2025?",
+    imageUrl: "https://picsum.photos/400/300?grayscale&random=5",
+    probability: 58,
+    volume: 1320000,
+    category: "Tech",
+    endDate: "2025-08-31",
+    history: [45, 48, 50, 53, 55, 58],
+    isAiGenerated: true,
+    type: "global",
+    aiInsight:
+      "Hiring signals and partner briefings point to a mid-year model drop if safety reviews stay on track.",
+    bullCase: [
+      "Red-teaming milestones hit",
+      "Enterprise demand pressures launch",
+    ],
+    bearCase: ["Regulatory scrutiny slows release", "Compute costs delay GA"],
+  },
+  {
+    id: "6",
+    title: "Ethereum trades above $5k before May 2025",
+    description:
+      "Will ETH print a daily close above $5,000 on any major exchange before May 1, 2025?",
+    imageUrl: "https://picsum.photos/400/300?grayscale&random=6",
+    probability: 37,
+    volume: 2120000,
+    category: "Crypto",
+    endDate: "2025-05-01",
+    history: [28, 30, 32, 31, 35, 37],
+    isAiGenerated: true,
+    type: "global",
+    aiInsight:
+      "Staking yields and ETF chatter help, but macro liquidity and BTC dominance remain headwinds.",
+    bullCase: ["ETF approvals expand access", "L2 activity sustains fees"],
+    bearCase: ["Macro risk-off", "Regulatory pressure on staking"],
+  },
+  {
+    id: "7",
+    title: "SpaceX Starship reflies the same booster in 2025",
+    description:
+      "Will SpaceX achieve a successful Starship launch using a previously flown Super Heavy booster before December 31, 2025?",
+    imageUrl: "https://picsum.photos/400/300?grayscale&random=7",
+    probability: 62,
+    volume: 960000,
+    category: "Science",
+    endDate: "2025-12-31",
+    history: [48, 50, 55, 58, 60, 62],
+    isAiGenerated: true,
+    type: "global",
+    aiInsight:
+      "Rapid cadence on test hardware and FAA coordination suggest reusability trials stay on schedule.",
+    bullCase: ["FAA approvals accelerate", "Raptor supply chain steady"],
+    bearCase: ["Thermal issues persist", "Pad refurbishment slows cadence"],
+  },
+  {
+    id: "8",
+    title: "Apple announces Vision Pro 2 at WWDC 2025",
+    description:
+      "Will Apple preview or announce a second-generation Vision Pro headset during WWDC 2025?",
+    imageUrl: "https://picsum.photos/400/300?grayscale&random=8",
+    probability: 54,
+    volume: 540000,
+    category: "Tech",
+    endDate: "2025-06-15",
+    history: [42, 45, 47, 50, 52, 54],
+    isAiGenerated: true,
+    type: "global",
+    aiInsight:
+      "Developer kit rumors and supply chain checks point to a slimmer refresh, but pricing could slip.",
+    bullCase: ["Manufacturing yields improve", "Competition pressures roadmap"],
+    bearCase: ["Component shortages", "Focus shifts to software features"],
+  },
+  {
+    id: "9",
+    title: "Global CPI inflation falls below 2.5% YoY by Dec 2025",
+    description:
+      "Will aggregated G20 CPI inflation land under 2.5% year-over-year by the December 2025 print?",
+    imageUrl: "https://picsum.photos/400/300?grayscale&random=9",
+    probability: 36,
+    volume: 880000,
+    category: "Economics",
+    endDate: "2026-01-31",
+    history: [30, 31, 32, 34, 35, 36],
+    isAiGenerated: true,
+    type: "global",
+    aiInsight:
+      "Energy base effects help, but services inflation and wage stickiness keep odds below 40%.",
+    bullCase: ["Oil stays range-bound", "Productivity uptick tempers wages"],
+    bearCase: ["Geopolitical supply shocks", "Services inflation stays sticky"],
+  },
+  {
+    id: "10",
+    title: "Los Angeles Lakers reach the 2025 NBA Finals",
+    description:
+      "Will the Lakers win the Western Conference and appear in the 2025 NBA Finals?",
+    imageUrl: "https://picsum.photos/400/300?grayscale&random=10",
+    probability: 28,
+    volume: 350000,
+    category: "Sports",
+    endDate: "2025-06-15",
+    history: [22, 24, 25, 26, 27, 28],
+    isAiGenerated: true,
+    type: "global",
+    aiInsight:
+      "Healthy minutes from stars boost ceiling, but depth and defense rank middle of the pack.",
+    bullCase: ["Roster stays healthy", "Trade deadline upgrade hits"],
+    bearCase: ["Defense leaks on perimeter", "Older roster fatigue risk"],
+  },
+  {
+    id: "11",
+    title: "EU AI Act enforcement begins before Q4 2025",
+    description:
+      "Will core enforcement provisions of the EU AI Act be in effect before October 1, 2025?",
+    imageUrl: "https://picsum.photos/400/300?grayscale&random=11",
+    probability: 52,
+    volume: 610000,
+    category: "Politics",
+    endDate: "2025-10-01",
+    history: [44, 46, 48, 50, 51, 52],
+    isAiGenerated: true,
+    type: "global",
+    aiInsight:
+      "Member states are lining up oversight bodies, but guidance on foundation models could slide timelines.",
+    bullCase: ["Consensus on risk tiers", "Political momentum pre-elections"],
+    bearCase: ["Legal challenges", "Implementation guidance delayed"],
+  },
+  {
+    id: "12",
+    title: "NVIDIA guides FY2026 revenue above $120B",
+    description:
+      "Will NVIDIA issue FY2026 revenue guidance exceeding $120 billion in its next full-year outlook?",
+    imageUrl: "https://picsum.photos/400/300?grayscale&random=12",
+    probability: 57,
+    volume: 1750000,
+    category: "Tech",
+    endDate: "2025-12-15",
+    history: [48, 50, 52, 54, 55, 57],
+    isAiGenerated: true,
+    type: "global",
+    aiInsight:
+      "Hyperscaler capex plans stay elevated, but supply constraints and China controls are watch-outs.",
+    bullCase: ["AI server demand persists", "New GPU ramp hits yield targets"],
+    bearCase: ["Export controls expand", "Capex digestion in late 2025"],
+  },
+  {
+    id: "13",
+    title: "India flies a crewed Gaganyaan mission before 2026",
+    description:
+      "Will ISRO complete its first crewed Gaganyaan orbital mission before January 1, 2026?",
+    imageUrl: "https://picsum.photos/400/300?grayscale&random=13",
+    probability: 35,
+    volume: 420000,
+    category: "Science",
+    endDate: "2025-12-31",
+    history: [28, 30, 31, 33, 34, 35],
+    isAiGenerated: true,
+    type: "global",
+    aiInsight:
+      "Pad abort tests are promising, but crew module life-support timelines keep odds under 40%.",
+    bullCase: ["Successful uncrewed re-entry", "Budget approvals intact"],
+    bearCase: ["Schedule slips on escape system", "Supplier delays"],
+  },
 ];
 
 const INITIAL_USER: User = {
@@ -84,6 +273,8 @@ function App() {
   const [selectedMarket, setSelectedMarket] = useState<Market | null>(null);
   const [user, setUser] = useState<User>(INITIAL_USER);
   const [theme, setTheme] = useState<ThemeMode>("light");
+  const [homeSearchTerm, setHomeSearchTerm] = useState("");
+  const [homeActiveTopic, setHomeActiveTopic] = useState("For you");
 
   // Load trending markets on mount
   useEffect(() => {
@@ -192,6 +383,8 @@ function App() {
             user={user}
             onMarketClick={handleMarketClick}
             onExplore={() => setView(ViewState.EXPLORE)}
+            searchTerm={homeSearchTerm}
+            activeTopic={homeActiveTopic}
           />
         );
       case ViewState.EXPLORE:
@@ -256,6 +449,10 @@ function App() {
       onLogout={handleLogout}
       theme={theme}
       onToggleTheme={toggleTheme}
+      homeSearchTerm={homeSearchTerm}
+      homeActiveTopic={homeActiveTopic}
+      onHomeSearchChange={setHomeSearchTerm}
+      onHomeTopicChange={setHomeActiveTopic}
     >
       {renderContent()}
     </Layout>
