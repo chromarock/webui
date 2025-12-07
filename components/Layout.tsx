@@ -381,26 +381,28 @@ export const Layout: React.FC<LayoutProps> = ({
         <main className="flex-1 overflow-x-hidden pb-36 sm:pb-16 lg:pb-10">
           {isHome && (
             <div>
-              <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2">
-                <div className="flex items-center gap-3 overflow-x-auto scrollbar-hide w-full py-1">
-                  <div className="flex items-center min-w-[220px] bg-brand-darker border border-brand-border rounded-xl px-3 py-2 flex-shrink-0">
-                    <Search size={16} className="text-text-tertiary mr-2" />
-                    <input
-                      value={homeSearchTerm ?? ""}
-                      onChange={(e) => onHomeSearchChange?.(e.target.value)}
-                      placeholder="Search"
-                      className="w-full bg-transparent text-text-primary placeholder-text-tertiary focus:outline-none text-sm"
-                    />
+              <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 space-y-3 lg:space-y-0">
+                <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:gap-3 w-full">
+                  <div className="flex items-center gap-3 w-full overflow-x-auto scrollbar-hide flex-nowrap lg:flex-nowrap lg:overflow-visible lg:w-auto">
+                    <div className="flex items-center min-w-[260px] bg-brand-darker border border-brand-border rounded-xl px-3 py-2 flex-1 w-full lg:flex-[2] lg:min-w-[320px]">
+                      <Search size={16} className="text-text-tertiary mr-2" />
+                      <input
+                        value={homeSearchTerm ?? ""}
+                        onChange={(e) => onHomeSearchChange?.(e.target.value)}
+                        placeholder="Search"
+                        className="w-full bg-transparent text-text-primary placeholder-text-tertiary focus:outline-none text-sm"
+                      />
+                    </div>
+                    <button className="p-2 rounded-lg border border-brand-border text-text-secondary hover:text-text-primary hover:border-brand-accent transition-colors flex-shrink-0">
+                      <SlidersHorizontal size={18} />
+                    </button>
+                    <button className="p-2 rounded-lg border border-brand-border text-text-secondary hover:text-text-primary hover:border-brand-accent transition-colors flex-shrink-0">
+                      <Bookmark size={18} />
+                    </button>
                   </div>
-                  <button className="p-2 rounded-lg border border-brand-border text-text-secondary hover:text-text-primary hover:border-brand-accent transition-colors flex-shrink-0">
-                    <SlidersHorizontal size={18} />
-                  </button>
-                  <button className="p-2 rounded-lg border border-brand-border text-text-secondary hover:text-text-primary hover:border-brand-accent transition-colors flex-shrink-0">
-                    <Bookmark size={18} />
-                  </button>
-                  <div className="relative flex-1 min-w-[200px]">
+                  <div className="relative w-full lg:flex-1 lg:max-w-[70%]">
                     <div
-                      className="flex items-center gap-2 flex-nowrap overflow-x-auto scrollbar-hide pr-14"
+                      className="flex items-center gap-2 flex-nowrap overflow-x-auto scrollbar-hide pr-14 lg:flex-nowrap lg:overflow-x-auto"
                       ref={pillScrollerRef}
                       onScroll={updatePillScrollState}
                     >

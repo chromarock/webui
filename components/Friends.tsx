@@ -53,9 +53,6 @@ export const Friends: React.FC<FriendsProps> = ({
               <span className="px-3 py-1.5 rounded-full text-[11px] font-semibold bg-brand-darker text-text-secondary border border-brand-border dark:bg-brand-surface/10 dark:text-text-primary">
                 Private rooms
               </span>
-              <span className="px-3 py-1.5 rounded-full text-[11px] font-semibold bg-brand-accent/10 text-brand-accent border border-brand-accent/40 dark:bg-brand-accent/15">
-                Instant settlement
-              </span>
               <span className="px-3 py-1.5 rounded-full text-[11px] font-semibold bg-brand-accent-2/10 text-brand-accent-2 border border-brand-accent-2/40 flex items-center gap-1 dark:bg-brand-accent-2/15">
                 <ShieldCheck size={14} />
                 Secure by design
