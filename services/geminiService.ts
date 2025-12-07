@@ -151,7 +151,7 @@ export const chatAboutMarket = async (
 ): Promise<string> => {
   if (!ai) {
     console.warn("Gemini API key missing; returning fallback chat response.");
-    return "AI chat unavailable. Please add your Gemini API key.";
+    return "YOOOO";
   }
   try {
     const chat = ai.chats.create({

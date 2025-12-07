@@ -117,6 +117,226 @@ export const MarketDetail: React.FC<MarketDetailProps> = ({
         </span>
       </div>
 
+      {/* Chart + Trade (desktop) */}
+      <div className="mb-8 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:items-stretch">
+        <div
+          className={`lg:col-span-9 h-full min-h-[420px] sm:min-h-[500px] relative overflow-hidden rounded-2xl border shadow-xl select-none ${
+            isDark
+              ? "border-brand-border bg-gradient-to-br from-brand-surface/80 via-brand-darker/70 to-brand-surface/60"
+              : "border-brand-border/80 bg-gradient-to-br from-white via-brand-surface to-white"
+          }`}
+        >
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(59,130,246,0.12),transparent_35%),radial-gradient(circle_at_80%_0%,rgba(16,185,129,0.12),transparent_30%),radial-gradient(circle_at_50%_80%,rgba(236,72,153,0.10),transparent_35%)] pointer-events-none" />
+          <div
+            className={`absolute inset-4 rounded-2xl backdrop-blur-sm ${
+              isDark ? "border border-white/5" : "border border-black/5"
+            }`}
+          />
+
+          <div className="relative h-full p-4 sm:p-6 flex flex-col gap-4">
+            <div className="flex items-center justify-between gap-2 sm:gap-3 flex-wrap text-xs sm:text-sm">
+              <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+                <div className="px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-semibold bg-black/10 border border-white/10 text-text-primary">
+                  Price history
+                </div>
+                <span
+                  className={`px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-semibold border ${
+                    priceDelta >= 0
+                      ? "bg-emerald-500/10 text-emerald-300 border-emerald-400/40"
+                      : "bg-rose-500/10 text-rose-300 border-rose-400/40"
+                  }`}
+                >
+                  {priceDelta >= 0 ? "+" : "-"}
+                  {Math.abs(priceDelta).toFixed(1)} pts
+                </span>
+              </div>
+              <div className="flex gap-1.5 sm:gap-2">
+                {["1H", "1D", "1W", "All"].map((t) => (
+                  <button
+                    key={t}
+                    className={`px-2.5 sm:px-3 py-1 text-[10px] sm:text-xs rounded-full border transition-all ${
+                      isDark
+                        ? "border-white/10 bg-white/5 text-text-secondary hover:text-text-primary hover:border-brand-accent/60"
+                        : "border-black/10 bg-black/5 text-text-secondary hover:text-text-primary hover:border-brand-accent/60"
+                    }`}
+                  >
+                    {t}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 sm:gap-6 flex-wrap text-xs sm:text-base">
+              <div className="flex items-baseline gap-1.5 sm:gap-2">
+                <span className="text-2xl sm:text-4xl font-mono font-bold text-text-primary">
+                  {currentPrice.toFixed(1)}%
+                </span>
+                <span
+                  className={`text-xs sm:text-sm font-semibold ${
+                    priceDelta >= 0 ? "text-emerald-300" : "text-rose-300"
+                  }`}
+                >
+                  {priceDelta >= 0 ? "+" : "-"}
+                  {Math.abs(priceDelta).toFixed(1)} ({priceDeltaPct}%)
+                </span>
+              </div>
+              <div className="text-[11px] sm:text-xs text-text-secondary">
+                From {startPrice.toFixed(1)}% start · {history.length} pts
+              </div>
+            </div>
+
+            <div
+              className={`relative flex-1 rounded-xl border backdrop-blur-sm overflow-hidden ${
+                isDark
+                  ? "border-white/5 bg-black/10"
+                  : "border-black/10 bg-white/60"
+              }`}
+            >
+              <div className="h-full min-h-[320px]">
+                <MarketChart
+                  data={history}
+                  height="100%"
+                  showGradient={true}
+                  strokeWidth={3}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Trade card beside chart on desktop */}
+        <div className="hidden lg:block lg:col-span-3">
+          <div className="h-full bg-brand-surface border border-brand-border rounded-2xl p-5 shadow-md space-y-4 flex flex-col">
+            {/* Buy / Sell */}
+            <div className="flex items-center gap-2">
+              <button className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-market-yes/15 text-market-yes border border-market-yes/40">
+                Buy
+              </button>
+              <button className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-brand-darker text-text-secondary border border-brand-border">
+                Sell
+              </button>
+              <span className="ml-auto text-[11px] text-text-secondary">
+                Limit
+              </span>
+            </div>
+
+            {/* Yes / No switch with price */}
+            <div className="flex bg-brand-darker rounded-lg p-1 border border-brand-border">
+              <button
+                onClick={() => setOutcome("YES")}
+                className={`flex-1 py-2 text-sm font-bold rounded transition-all flex items-center justify-center gap-1 ${
+                  outcome === "YES"
+                    ? "bg-market-yes text-white shadow"
+                    : "text-text-secondary hover:text-text-primary"
+                }`}
+              >
+                <span>YES</span>
+                <span className="text-[11px] font-mono">
+                  {market.probability}¢
+                </span>
+              </button>
+              <button
+                onClick={() => setOutcome("NO")}
+                className={`flex-1 py-2 text-sm font-bold rounded transition-all flex items-center justify-center gap-1 ${
+                  outcome === "NO"
+                    ? "bg-market-no text-white shadow"
+                    : "text-text-secondary hover:text-text-primary"
+                }`}
+              >
+                <span>NO</span>
+                <span className="text-[11px] font-mono">
+                  {100 - market.probability}¢
+                </span>
+              </button>
+            </div>
+
+            {/* Amount & contracts */}
+            <div className="space-y-3">
+              <div>
+                <label className="text-[10px] uppercase font-bold text-text-tertiary">
+                  Amount ($)
+                </label>
+                <input
+                  type="number"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  placeholder="0.00"
+                  className="w-full bg-brand-darker border border-brand-border rounded-lg p-3 text-text-primary font-mono text-lg focus:border-brand-accent focus:ring-1 focus:ring-brand-accent outline-none transition-all"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-brand-darker border border-brand-border rounded-lg p-3">
+                  <div className="text-[11px] text-text-tertiary font-semibold">
+                    Contracts
+                  </div>
+                  <div className="text-lg font-mono text-text-primary">
+                    {shares}
+                  </div>
+                  <div className="text-[10px] text-text-tertiary">
+                    Earn $1 if correct
+                  </div>
+                </div>
+                <div className="bg-brand-darker border border-brand-border rounded-lg p-3">
+                  <div className="text-[11px] text-text-tertiary font-semibold">
+                    Limit price (¢)
+                  </div>
+                  <div className="text-lg font-mono text-text-primary">
+                    {price}
+                  </div>
+                  <div className="text-[10px] text-text-tertiary">
+                    You can adjust before submitting
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Expiration / order type */}
+            <div className="space-y-2">
+              <div className="text-[11px] uppercase text-text-tertiary font-bold">
+                Expiration
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <button className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-brand-darker text-text-secondary border border-brand-border hover:text-text-primary">
+                  GTC
+                </button>
+                <button className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-brand-darker text-text-secondary border border-brand-border hover:text-text-primary">
+                  At event start
+                </button>
+                <button className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-brand-darker text-text-secondary border border-brand-border hover:text-text-primary">
+                  IOC
+                </button>
+              </div>
+            </div>
+
+            {/* Summary */}
+            <div className="space-y-2 pt-2 border-t border-brand-border/50 mt-auto">
+              <div className="flex justify-between text-xs">
+                <span className="text-text-tertiary">Price</span>
+                <span className="text-text-primary font-mono">{price}¢</span>
+              </div>
+              <div className="flex justify-between text-xs">
+                <span className="text-text-tertiary">Est. Return</span>
+                <span className="text-market-yes font-mono">
+                  +${potentialProfit.toFixed(2)} ({roi}%)
+                </span>
+              </div>
+            </div>
+
+            <Button
+              variant={outcome === "YES" ? "success" : "danger"}
+              className="w-full py-3 text-base font-bold"
+              onClick={handleTrade}
+              disabled={!amount || parseFloat(amount) <= 0}
+            >
+              {user.isLoggedIn ? "Review Order" : "Log In to Trade"}
+            </Button>
+            <div className="text-center text-[10px] text-text-tertiary">
+              Max position limit: $500.00
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* LEFT COLUMN: Summary (3 cols) */}
         <div className="lg:col-span-3 space-y-6">
@@ -135,7 +355,7 @@ export const MarketDetail: React.FC<MarketDetailProps> = ({
           </div>
 
           {/* Probability Pills */}
-          <div className="space-y-3">
+          <div className="grid grid-cols-2 gap-3">
             <div
               className={`p-4 rounded-xl border transition-all ${
                 market.probability >= 50
@@ -219,99 +439,8 @@ export const MarketDetail: React.FC<MarketDetailProps> = ({
           </div>
         </div>
 
-        {/* CENTER COLUMN: Chart & Content (6 cols) */}
+        {/* CENTER COLUMN: Content (6 cols) */}
         <div className="lg:col-span-6 space-y-6">
-          {/* Chart Container */}
-          <div
-            className={`h-[430px] relative overflow-hidden rounded-2xl border shadow-xl select-none ${
-              isDark
-                ? "border-brand-border bg-gradient-to-br from-brand-surface/80 via-brand-darker/70 to-brand-surface/60"
-                : "border-brand-border/80 bg-gradient-to-br from-white via-brand-surface to-white"
-            }`}
-          >
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(59,130,246,0.12),transparent_35%),radial-gradient(circle_at_80%_0%,rgba(16,185,129,0.12),transparent_30%),radial-gradient(circle_at_50%_80%,rgba(236,72,153,0.10),transparent_35%)] pointer-events-none" />
-            <div
-              className={`absolute inset-4 rounded-2xl backdrop-blur-sm ${
-                isDark ? "border border-white/5" : "border border-black/5"
-              }`}
-            />
-
-            <div className="relative h-full p-6 flex flex-col gap-4">
-              <div className="flex items-center justify-between gap-3">
-                <div className="flex items-center gap-3">
-                  <div className="px-3 py-1 rounded-full text-xs font-semibold bg-black/10 border border-white/10 text-text-primary">
-                    Price History · Implied Probability
-                  </div>
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold border ${
-                      priceDelta >= 0
-                        ? "bg-emerald-500/10 text-emerald-300 border-emerald-400/40"
-                        : "bg-rose-500/10 text-rose-300 border-rose-400/40"
-                    }`}
-                  >
-                    {priceDelta >= 0 ? "Bullish" : "Bearish"} ·{" "}
-                    {Math.abs(priceDelta).toFixed(1)}pts
-                  </span>
-                </div>
-                <div className="flex gap-2">
-                  {["1H", "1D", "1W", "All"].map((t) => (
-                    <button
-                      key={t}
-                      className={`px-3 py-1.5 text-xs rounded-full border transition-all ${
-                        isDark
-                          ? "border-white/10 bg-white/5 text-text-secondary hover:text-text-primary hover:border-brand-accent/60"
-                          : "border-black/10 bg-black/5 text-text-secondary hover:text-text-primary hover:border-brand-accent/60"
-                      }`}
-                    >
-                      {t}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex items-center gap-6">
-                <div className="flex items-baseline gap-2">
-                  <span className="text-4xl font-mono font-bold text-text-primary">
-                    {currentPrice.toFixed(1)}%
-                  </span>
-                  <span
-                    className={`text-sm font-semibold ${
-                      priceDelta >= 0 ? "text-emerald-300" : "text-rose-300"
-                    }`}
-                  >
-                    {priceDelta >= 0 ? "+" : "-"}
-                    {Math.abs(priceDelta).toFixed(1)} ({priceDeltaPct}%)
-                  </span>
-                </div>
-                <div className="text-xs text-text-secondary">
-                  From {startPrice.toFixed(1)}% start · {history.length} pts
-                </div>
-              </div>
-
-              <div
-                className={`relative flex-1 rounded-xl border backdrop-blur-sm overflow-hidden ${
-                  isDark
-                    ? "border-white/5 bg-black/10"
-                    : "border-black/10 bg-white/60"
-                }`}
-              >
-                <div
-                  className={`absolute inset-0 bg-[length:20px_100%,100%_20px] ${
-                    isDark
-                      ? "opacity-[0.05] bg-[linear-gradient(to_right,transparent_95%,white_95%),linear-gradient(to_bottom,transparent_95%,white_95%)]"
-                      : "opacity-40 bg-[linear-gradient(to_right,transparent_96%,rgba(0,0,0,0.08)_96%),linear-gradient(to_bottom,transparent_96%,rgba(0,0,0,0.08)_96%)]"
-                  }`}
-                />
-                <MarketChart
-                  data={history}
-                  height={280}
-                  showGradient={true}
-                  strokeWidth={3}
-                />
-              </div>
-            </div>
-          </div>
-
           {/* Tabs */}
           <div className="flex border-b border-brand-border">
             <button
@@ -398,32 +527,50 @@ export const MarketDetail: React.FC<MarketDetailProps> = ({
 
         {/* RIGHT COLUMN: Actions (3 cols) */}
         <div className="lg:col-span-3 space-y-6">
-          {/* Trade Box */}
-          <div className="bg-brand-surface border border-brand-border rounded-2xl p-5 shadow-md">
-            <div className="flex bg-brand-darker rounded-lg p-1 mb-4 border border-brand-border">
+          {/* Trade Box (mobile/tablet) */}
+          <div className="bg-brand-surface border border-brand-border rounded-2xl p-5 shadow-md lg:hidden space-y-4">
+            <div className="flex items-center gap-2">
+              <button className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-market-yes/15 text-market-yes border border-market-yes/40">
+                Buy
+              </button>
+              <button className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-brand-darker text-text-secondary border border-brand-border">
+                Sell
+              </button>
+              <span className="ml-auto text-[11px] text-text-secondary">
+                Limit
+              </span>
+            </div>
+
+            <div className="flex bg-brand-darker rounded-lg p-1 border border-brand-border">
               <button
                 onClick={() => setOutcome("YES")}
-                className={`flex-1 py-2 text-sm font-bold rounded transition-all ${
+                className={`flex-1 py-2 text-sm font-bold rounded transition-all flex items-center justify-center gap-1 ${
                   outcome === "YES"
                     ? "bg-market-yes text-white shadow"
                     : "text-text-secondary hover:text-text-primary"
                 }`}
               >
-                YES
+                <span>YES</span>
+                <span className="text-[11px] font-mono">
+                  {market.probability}¢
+                </span>
               </button>
               <button
                 onClick={() => setOutcome("NO")}
-                className={`flex-1 py-2 text-sm font-bold rounded transition-all ${
+                className={`flex-1 py-2 text-sm font-bold rounded transition-all flex items-center justify-center gap-1 ${
                   outcome === "NO"
                     ? "bg-market-no text-white shadow"
                     : "text-text-secondary hover:text-text-primary"
                 }`}
               >
-                NO
+                <span>NO</span>
+                <span className="text-[11px] font-mono">
+                  {100 - market.probability}¢
+                </span>
               </button>
             </div>
 
-            <div className="space-y-4 mb-6">
+            <div className="space-y-3">
               <div>
                 <label className="text-[10px] uppercase font-bold text-text-tertiary">
                   Amount ($)
@@ -436,18 +583,59 @@ export const MarketDetail: React.FC<MarketDetailProps> = ({
                   className="w-full bg-brand-darker border border-brand-border rounded-lg p-3 text-text-primary font-mono text-lg focus:border-brand-accent focus:ring-1 focus:ring-brand-accent outline-none transition-all"
                 />
               </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-brand-darker border border-brand-border rounded-lg p-3">
+                  <div className="text-[11px] text-text-tertiary font-semibold">
+                    Contracts
+                  </div>
+                  <div className="text-lg font-mono text-text-primary">
+                    {shares}
+                  </div>
+                  <div className="text-[10px] text-text-tertiary">
+                    Earn $1 if correct
+                  </div>
+                </div>
+                <div className="bg-brand-darker border border-brand-border rounded-lg p-3">
+                  <div className="text-[11px] text-text-tertiary font-semibold">
+                    Limit price (¢)
+                  </div>
+                  <div className="text-lg font-mono text-text-primary">
+                    {price}
+                  </div>
+                  <div className="text-[10px] text-text-tertiary">
+                    You can adjust before submitting
+                  </div>
+                </div>
+              </div>
+            </div>
 
-              <div className="space-y-2 pt-2 border-t border-brand-border/50">
-                <div className="flex justify-between text-xs">
-                  <span className="text-text-tertiary">Price</span>
-                  <span className="text-text-primary font-mono">{price}¢</span>
-                </div>
-                <div className="flex justify-between text-xs">
-                  <span className="text-text-tertiary">Est. Return</span>
-                  <span className="text-market-yes font-mono">
-                    +${potentialProfit.toFixed(2)} ({roi}%)
-                  </span>
-                </div>
+            <div className="space-y-2">
+              <div className="text-[11px] uppercase text-text-tertiary font-bold">
+                Expiration
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <button className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-brand-darker text-text-secondary border border-brand-border hover:text-text-primary">
+                  GTC
+                </button>
+                <button className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-brand-darker text-text-secondary border border-brand-border hover:text-text-primary">
+                  At event start
+                </button>
+                <button className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-brand-darker text-text-secondary border border-brand-border hover:text-text-primary">
+                  IOC
+                </button>
+              </div>
+            </div>
+
+            <div className="space-y-2 pt-2 border-t border-brand-border/50">
+              <div className="flex justify-between text-xs">
+                <span className="text-text-tertiary">Price</span>
+                <span className="text-text-primary font-mono">{price}¢</span>
+              </div>
+              <div className="flex justify-between text-xs">
+                <span className="text-text-tertiary">Est. Return</span>
+                <span className="text-market-yes font-mono">
+                  +${potentialProfit.toFixed(2)} ({roi}%)
+                </span>
               </div>
             </div>
 
@@ -457,22 +645,22 @@ export const MarketDetail: React.FC<MarketDetailProps> = ({
               onClick={handleTrade}
               disabled={!amount || parseFloat(amount) <= 0}
             >
-              {user.isLoggedIn ? "Place Trade" : "Log In to Trade"}
+              {user.isLoggedIn ? "Review Order" : "Log In to Trade"}
             </Button>
-            <div className="mt-3 text-center text-[10px] text-text-tertiary">
+            <div className="text-center text-[10px] text-text-tertiary">
               Max position limit: $500.00
             </div>
           </div>
 
           {/* AI Copilot Panel */}
-          <div className="bg-gradient-to-br from-brand-surface to-brand-darker border border-brand-border rounded-2xl overflow-hidden flex flex-col h-[500px] shadow-sm">
+          <div className="bg-gradient-to-br from-brand-surface to-brand-darker border border-brand-border rounded-2xl overflow-hidden flex flex-col min-h-[360px] sm:min-h-[420px] shadow-sm">
             <div className="p-3 bg-brand-darker border-b border-brand-border flex items-center justify-between">
               <span className="text-xs font-bold text-brand-accent uppercase tracking-wider">
                 Chromarock AI Copilot
               </span>
               <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
             </div>
-            <div className="flex-1 overflow-hidden">
+            <div className="flex-1">
               <MarketChat market={market} />
             </div>
           </div>

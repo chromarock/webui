@@ -273,7 +273,7 @@ function App() {
   const [markets, setMarkets] = useState<Market[]>(INITIAL_MARKETS);
   const [selectedMarket, setSelectedMarket] = useState<Market | null>(null);
   const [user, setUser] = useState<User>(INITIAL_USER);
-  const [theme, setTheme] = useState<ThemeMode>("light");
+  const [theme, setTheme] = useState<ThemeMode>("dark");
   const [homeSearchTerm, setHomeSearchTerm] = useState("");
   const [homeActiveTopic, setHomeActiveTopic] = useState("For you");
 

@@ -478,7 +478,7 @@ export const Layout: React.FC<LayoutProps> = ({
               aria-label="Primary navigation"
             >
               <div
-                className={`w-full max-w-md mx-auto px-3 py-2 rounded-full border border-brand-border shadow-xl backdrop-blur-lg flex items-center gap-2 ${
+                className={`w-full max-w-md mx-auto px-3 py-2 rounded-full shadow-xl backdrop-blur-lg flex items-center gap-2 ${
                   isDark ? "bg-brand-darker/90" : "bg-white/95"
                 }`}
               >

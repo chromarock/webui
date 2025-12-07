@@ -81,12 +81,12 @@ export const Explore: React.FC<ExploreProps> = ({
 
       {/* Filters & Toggles */}
       <div className="flex flex-col md:flex-row justify-between items-center gap-4 pb-4 border-b border-brand-border">
-        <div className="flex flex-wrap gap-2">
+        <div className="flex gap-2 overflow-x-auto scrollbar-hide w-full flex-nowrap md:flex-wrap md:overflow-visible">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setCategoryFilter(cat)}
-              className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
+              className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all flex-shrink-0 ${
                 categoryFilter === cat
                   ? "bg-brand-accent text-white shadow-md shadow-brand-accent/30"
                   : "bg-brand-surface border border-brand-border text-text-secondary hover:text-text-primary hover:border-brand-accent"
@@ -97,8 +97,8 @@ export const Explore: React.FC<ExploreProps> = ({
           ))}
         </div>
 
-        <div className="flex items-center gap-3">
-          <div className="bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-text-secondary shadow-inner">
+        <div className="flex items-center justify-between w-full md:w-auto gap-3">
+          <div className="bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-text-secondary shadow-inner flex-shrink-0">
             <label className="mr-2 font-semibold">Sort</label>
             <select
               value={sortBy}
@@ -112,7 +112,7 @@ export const Explore: React.FC<ExploreProps> = ({
             </select>
           </div>
 
-          <div className="flex bg-brand-surface border border-brand-border rounded-lg p-1 shadow-inner">
+          <div className="flex bg-brand-surface border border-brand-border rounded-lg p-1 shadow-inner flex-shrink-0 ml-auto md:ml-0">
             <button
               onClick={() => setViewMode("grid")}
               className={`p-1.5 rounded ${

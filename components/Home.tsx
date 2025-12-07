@@ -40,39 +40,8 @@ export const Home: React.FC<HomeProps> = ({
 
   return (
     <div className="max-w-7xl mx-auto space-y-8 animate-fade-in">
-      {/* Hero / Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="md:col-span-2 bg-brand-surface border border-brand-border rounded-3xl p-6 relative overflow-hidden group shadow-[0_24px_60px_rgba(0,0,0,0.35)]">
-          <div className="absolute top-[-10%] right-[-10%] w-48 h-48 bg-brand-accent/30 blur-[90px] rounded-full"></div>
-          <div className="absolute bottom-[-20%] left-[-10%] w-64 h-64 bg-brand-accent-2/25 blur-[100px] rounded-full"></div>
-          <div className="relative z-10">
-            <h1 className="text-2xl font-bold text-text-primary mb-1">
-              {user.isLoggedIn
-                ? `Welcome back, ${user.username}`
-                : "Trade what you believe"}
-            </h1>
-            <p className="text-text-secondary text-sm mb-6 max-w-sm">
-              Clean, focused, and fast—now with a Robinhood-inspired feel.
-            </p>
-            <div className="flex gap-3">
-              <Button
-                variant="accent"
-                size="sm"
-                onClick={onExplore}
-                className="shadow-[0_15px_40px_rgba(241,153,63,0.35)]"
-              >
-                Explore Markets
-              </Button>
-              {!user.isLoggedIn && (
-                <Button variant="secondary" size="sm" onClick={onExplore}>
-                  See Pricing
-                </Button>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Mini Stat Cards */}
+      {/* Stats (hero removed per request) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="bg-brand-surface border border-brand-border rounded-3xl p-5 flex flex-col justify-between hover:border-brand-accent/50 transition-colors shadow-[0_20px_45px_rgba(0,0,0,0.25)]">
           <div className="flex justify-between items-start">
             <span className="text-[10px] uppercase font-bold text-text-tertiary tracking-wide">

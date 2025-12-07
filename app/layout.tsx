@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -15,7 +16,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
+      <head>
+        <Script id="force-dark-mode" strategy="beforeInteractive">
+          {`try { document.documentElement.classList.add('dark'); } catch (e) {}`}
+        </Script>
+      </head>
       <body>{children}</body>
     </html>
   );
