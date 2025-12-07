@@ -39,7 +39,7 @@ export const Home: React.FC<HomeProps> = ({
       {/* Main Feed */}
       <div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filtered.slice(0, 6).map((market) => (
+          {filtered.slice(0, 12).map((market) => (
             <MarketCard
               key={market.id}
               market={market}
