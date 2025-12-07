@@ -12,6 +12,51 @@ import {
   CartesianGrid,
 } from "recharts";
 
+const MarketTooltip: React.FC<any> = ({ active, payload, yesColor, noColor }) => {
+  if (!active || !payload || !payload.length) return null;
+  const yesVal = payload.find((p: any) => p.dataKey === "yes")?.value;
+  const noVal = payload.find((p: any) => p.dataKey === "no")?.value;
+  return (
+    <div className="rounded-lg border border-brand-border bg-brand-surface/90 px-3 py-2 shadow-md text-xs text-text-primary">
+      <div className="flex items-center gap-2">
+        <span className="w-2 h-2 rounded-full" style={{ background: yesColor }} />
+        <span className="font-semibold">YES</span>
+        <span className="font-mono">{Math.round(yesVal ?? 0)}%</span>
+      </div>
+      <div className="flex items-center gap-2 mt-1">
+        <span className="w-2 h-2 rounded-full" style={{ background: noColor }} />
+        <span className="font-semibold">NO</span>
+        <span className="font-mono">{Math.round(noVal ?? 0)}%</span>
+      </div>
+    </div>
+  );
+};
+MarketTooltip.displayName = "MarketTooltip";
+
+const HoverLabel: React.FC<any> = ({
+  x,
+  y,
+  index,
+  value,
+  targetIndex,
+  color,
+  labelText,
+  dy = -6,
+}) => {
+  if (index !== targetIndex || value === undefined || value === null) return null;
+  return (
+    <g transform={`translate(${x + 8}, ${y + dy})`}>
+      <text fill={color} fontWeight={700} textAnchor="start">
+        <tspan x={0} y={0} fontSize={11}>
+          {labelText.toUpperCase()}
+        </tspan>
+        <tspan x={0} dy={23} fontSize={20}>{`${Math.round(value)}%`}</tspan>
+      </text>
+    </g>
+  );
+};
+HoverLabel.displayName = "HoverLabel";
+
 interface MarketChartProps {
   data: number[];
   height?: number | string;
@@ -57,54 +102,6 @@ export const MarketChart: React.FC<MarketChartProps> = ({
   const axisMin =
     paddedMin === paddedMax ? Math.max(0, paddedMin - 1) : paddedMin;
   const axisMax = paddedMin === paddedMax ? paddedMax + 1 : paddedMax;
-
-  const renderTooltip = ({ active, payload }: any) => {
-    if (!active || !payload || !payload.length) return null;
-    const yesVal = payload.find((p: any) => p.dataKey === "yes")?.value;
-    const noVal = payload.find((p: any) => p.dataKey === "no")?.value;
-    return (
-      <div className="rounded-lg border border-brand-border bg-brand-surface/90 px-3 py-2 shadow-md text-xs text-text-primary">
-        <div className="flex items-center gap-2">
-          <span
-            className="w-2 h-2 rounded-full"
-            style={{ background: yesColor }}
-          />
-          <span className="font-semibold">YES</span>
-          <span className="font-mono">{Math.round(yesVal ?? 0)}%</span>
-        </div>
-        <div className="flex items-center gap-2 mt-1">
-          <span
-            className="w-2 h-2 rounded-full"
-            style={{ background: noColor }}
-          />
-          <span className="font-semibold">NO</span>
-          <span className="font-mono">{Math.round(noVal ?? 0)}%</span>
-        </div>
-      </div>
-    );
-  };
-  renderTooltip.displayName = "MarketChartTooltip";
-
-  const renderHoverLabel =
-    (color: string, label: string, dy = -6) =>
-    (props: any) => {
-      const { x, y, index, value } = props;
-      const targetIndex = activeIndex ?? lastIndex;
-      if (index !== targetIndex || value === undefined || value === null) {
-        return null;
-      }
-      return (
-        <g transform={`translate(${x + 8}, ${y + dy})`}>
-          <text fill={color} fontWeight={700} textAnchor="start">
-            <tspan x={0} y={0} fontSize={11}>
-              {label.toUpperCase()}
-            </tspan>
-            <tspan x={0} dy={23} fontSize={20}>{`${Math.round(value)}%`}</tspan>
-          </text>
-        </g>
-      );
-    };
-  renderHoverLabel.displayName = "MarketChartHoverLabel";
 
   if (!mounted) {
     return (
@@ -177,7 +174,16 @@ export const MarketChart: React.FC<MarketChartProps> = ({
             isAnimationActive={true}
             dot={false}
           >
-            <LabelList content={renderHoverLabel(yesColor, "YES", -10)} />
+            <LabelList
+              content={
+                <HoverLabel
+                  targetIndex={activeIndex ?? lastIndex}
+                  color={yesColor}
+                  labelText="YES"
+                  dy={-10}
+                />
+              }
+            />
           </Area>
           <Area
             type="monotone"
@@ -188,7 +194,16 @@ export const MarketChart: React.FC<MarketChartProps> = ({
             isAnimationActive={true}
             dot={false}
           >
-            <LabelList content={renderHoverLabel(noColor, "NO", 14)} />
+            <LabelList
+              content={
+                <HoverLabel
+                  targetIndex={activeIndex ?? lastIndex}
+                  color={noColor}
+                  labelText="NO"
+                  dy={14}
+                />
+              }
+            />
           </Area>
           <Tooltip
             cursor={{
@@ -196,7 +211,7 @@ export const MarketChart: React.FC<MarketChartProps> = ({
               strokeWidth: 1,
               strokeDasharray: "4 4",
             }}
-            content={renderTooltip}
+            content={<MarketTooltip yesColor={yesColor} noColor={noColor} />}
             isAnimationActive={false}
           />
         </AreaChart>
