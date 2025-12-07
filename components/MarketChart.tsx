@@ -222,3 +222,5 @@ export const MarketChart: React.FC<MarketChartProps> = ({
     </div>
   );
 };
+
+MarketChart.displayName = "MarketChart";
