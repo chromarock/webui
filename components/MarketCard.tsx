@@ -2,14 +2,7 @@
 
 import React from "react";
 import { Market } from "../types";
-import { MarketChart } from "./MarketChart";
-import {
-  TrendingUp,
-  Sparkles,
-  MoreHorizontal,
-  Heart,
-  Share2,
-} from "lucide-react";
+import { Sparkles, Heart, Share2, Plus } from "lucide-react";
 
 interface MarketCardProps {
   market: Market;
@@ -22,134 +15,137 @@ export const MarketCard: React.FC<MarketCardProps> = ({
   onClick,
   onQuickTrade,
 }) => {
-  const isSocial = market.type === "social";
-  const isUp = market.history[market.history.length - 1] >= market.history[0];
   const yesProb = market.probability;
-  const noProb = 100 - yesProb;
+  const noProb = Math.max(0, 100 - yesProb);
   const totalVolumeK = (market.volume / 1000).toFixed(1);
-  const primaryTag = market.category;
-  const hasAiTag = !!market.aiInsight || market.isAiGenerated;
+  const isMulti = market.mode === "multi" && (market.choices?.length || 0) > 0;
+  const topChoices = isMulti
+    ? [...(market.choices || [])].sort(
+        (a, b) => (b?.probability || 0) - (a?.probability || 0)
+      )
+    : [];
+  const remainingChoices = Math.max(0, topChoices.length - 2);
+  const previewStake = 100;
+  const previewReturn = (prob: number) =>
+    Math.round(previewStake * (1 + (prob / 100) * 0.25));
 
   return (
     <div
       onClick={() => onClick(market)}
       className="group relative bg-brand-surface border border-brand-border rounded-2xl overflow-hidden cursor-pointer hover:border-brand-accent/60 transition-all duration-200 hover:shadow-2xl hover:-translate-y-1 flex flex-col h-full"
     >
-      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-brand-accent via-brand-accent-2 to-brand-accent-3 opacity-70"></div>
-      {/* Top Row */}
-      <div className="p-4 flex justify-between items-start">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-brand-darker border border-brand-border flex items-center justify-center text-sm font-bold text-text-primary shadow-inner">
-            {primaryTag?.charAt(0) || "M"}
-          </div>
-          <div className="space-y-1">
-            <div className="hidden">
-              <span className="px-2 py-0.5 text-[10px] uppercase tracking-wider font-bold rounded-full bg-brand-darker text-text-secondary border border-brand-border">
-                {primaryTag}
-              </span>
-              {hasAiTag && (
-                <span className="px-2 py-0.5 text-[10px] uppercase tracking-wider font-bold rounded-full bg-brand-accent/10 text-brand-accent border border-brand-accent/30">
-                  AI Picks
-                </span>
-              )}
-              {market.volume > 10000 && (
-                <span className="flex items-center gap-1 px-2 py-0.5 text-[10px] uppercase tracking-wider font-bold rounded-full bg-brand-accent-2/10 text-brand-accent-2 border border-brand-accent-2/30">
-                  <TrendingUp size={10} /> Trending
-                </span>
-              )}
+      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-brand-accent to-brand-accent-2 opacity-100"></div>
+
+      <div className="p-4 space-y-4 flex-1">
+        {/* Header */}
+        <div className="flex items-start justify-between gap-1">
+          <div className="flex items-start gap-3">
+            <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-brand-darker border border-brand-border shrink-0">
+              <img
+                src={market.imageUrl}
+                alt={market.title}
+                className="w-full h-full object-cover"
+              />
+              <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-green-500 border border-brand-surface shadow" />
             </div>
-            <h3 className="text-base sm:text-lg font-semibold text-text-primary leading-tight line-clamp-2 group-hover:text-brand-accent transition-colors">
-              {market.title}
-            </h3>
+            <div className="space-y">
+              <div className="flex items-center gap-2 text-[10px] uppercase text-text-tertiary tracking-wide"></div>
+              <h3 className="text-sm sm:text-base text-text-primary leading-tight line-clamp-2 group-hover:text-brand-accent transition-colors">
+                {market.title}
+              </h3>
+            </div>
           </div>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="px-2 py-1 rounded-full text-[11px] font-semibold bg-brand-darker text-text-secondary border border-brand-border">
-            Active
-          </span>
-          <button className="text-text-tertiary hover:text-text-primary transition-colors">
-            <MoreHorizontal size={16} />
-          </button>
-        </div>
-      </div>
 
-      {/* Probability Bars */}
-      <div className="px-4 space-y-3">
-        <div className="bg-brand-darker border border-brand-border rounded-xl p-3 shadow-inner">
-          <div className="flex justify-between text-[11px] font-semibold text-text-secondary mb-2">
-            <span>Probability</span>
-            <span className="text-text-tertiary">Implied</span>
-          </div>
-          <div className="relative h-3 rounded-full bg-brand-border overflow-hidden">
-            <div
-              className="absolute left-0 top-0 h-full bg-market-yes"
-              style={{ width: `${yesProb}%` }}
-            ></div>
-            <div
-              className="absolute right-0 top-0 h-full bg-market-no"
-              style={{ width: `${noProb}%` }}
-            ></div>
-          </div>
-          <div className="flex justify-between text-[11px] font-mono mt-2">
-            <span className="text-market-yes font-bold">Yes {yesProb}%</span>
-            <span className="text-market-no font-bold">No {noProb}%</span>
-          </div>
+          {!isMulti && (
+            <div className="text-right">
+              <div className="text-xl font-mono font-normal text-text-primary leading-none">
+                {yesProb}%
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* Buttons row */}
-        <div className="flex gap-3">
-          <div className="flex-1 bg-brand-darker border border-brand-border rounded-lg px-3 py-2 flex items-center justify-between">
-            <span className="text-xs font-semibold text-text-secondary uppercase">
-              Yes
-            </span>
-            <span className="text-base font-mono font-bold text-market-yes">
-              {yesProb}%
-            </span>
+        {/* Body */}
+        {isMulti ? (
+          <div className="bg-brand-surface border border-brand-border rounded-xl p-3 space-y-2">
+            {topChoices.slice(0, 2).map((choice, idx) => (
+              <div
+                key={choice.id}
+                className={`flex items-center gap-3 ${
+                  idx !== Math.min(1, topChoices.length - 1)
+                    ? "border-b border-brand-border pb-2"
+                    : ""
+                }`}
+              >
+                <div className="flex-1 text-sm font-normal text-text-primary">
+                  {choice.label}
+                </div>
+                <div className="flex gap-2 flex-1 items-center">
+                  <span className="text-xs text-text-secondary shrink-0">
+                    {choice.probability}%
+                  </span>
+                  <div className="flex-1 rounded-lg px-3 py-1 text-xs font-normal text-center bg-[#00ff331a] text-[#00ff33]">
+                    Yes
+                  </div>
+                  <div className="flex-1 rounded-lg px-3 py-1 text-xs font-normal text-center bg-[#f90e1f1a] text-[#f90e1f]">
+                    No
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
-          <div className="flex-1 bg-brand-darker border border-brand-border rounded-lg px-3 py-2 flex items-center justify-between">
-            <span className="text-xs font-semibold text-text-secondary uppercase">
-              No
-            </span>
-            <span className="text-base font-mono font-bold text-market-no">
-              {noProb}%
-            </span>
-          </div>
-        </div>
-
-        {onQuickTrade && (
-          <div className="flex gap-2 pt-3">
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onQuickTrade(market, "YES");
-              }}
-              className="flex-1 text-xs font-semibold px-3 py-2 rounded-lg bg-market-yes/10 text-market-yes border border-market-yes/40 hover:bg-market-yes/20 transition-colors"
-            >
-              Quick Yes
-            </button>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onQuickTrade(market, "NO");
-              }}
-              className="flex-1 text-xs font-semibold px-3 py-2 rounded-lg bg-market-no/10 text-market-no border border-market-no/40 hover:bg-market-no/20 transition-colors"
-            >
-              Quick No
-            </button>
+        ) : (
+          <div className="space-y-3">
+            <div className="grid grid-cols-2 gap-3 text-center">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onQuickTrade?.(market, "YES");
+                }}
+                className="rounded-xl px-3 py-3 transition-colors flex flex-col items-center justify-center gap-1 bg-[#00ff331a] hover:bg-[#00ff3333]"
+              >
+                <div className="text-sm font-semibold text-[#00ff33]">Yes</div>
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onQuickTrade?.(market, "NO");
+                }}
+                className="rounded-xl px-3 py-3 transition-colors flex flex-col items-center justify-center gap-1 bg-[#f90e1f1a] hover:bg-[#f90e1f33]"
+              >
+                <div className="text-sm font-semibold text-[#f90e1f]">No</div>
+              </button>
+            </div>
+            <div className="grid grid-cols-2 gap-3 text-xs text-text-secondary font-semibold text-center">
+              <div className="flex items-center justify-center gap-2 px-1">
+                <span>${previewStake}</span>
+                <span className="text-sm font-semibold text-[#00ff33b3]">
+                  → ${previewReturn(yesProb)}
+                </span>
+              </div>
+              <div className="flex items-center justify-center gap-2 px-1">
+                <span>${previewStake}</span>
+                <span className="text-sm font-semibold text-[#00ff33b3]">
+                  → ${previewReturn(noProb)}
+                </span>
+              </div>
+            </div>
           </div>
         )}
       </div>
 
-      {/* Footer / AI Insight */}
-      <div className="bg-brand-darker border-t border-brand-border p-3 mt-4">
-        <div className="flex items-start gap-2">
-          <Sparkles size={14} className="text-brand-accent mt-0.5 shrink-0" />
-          <p className="text-xs text-text-secondary leading-snug line-clamp-2">
-            {market.aiInsight || "AI analyzing market sentiment..."}
-          </p>
-        </div>
-        <div className="flex justify-between items-center mt-3 text-[11px] text-text-tertiary font-medium">
-          <span>Total deposits: ${totalVolumeK}k</span>
+      {/* Footer */}
+      <div className="bg-brand-darker border-t border-brand-border p-3">
+        <div className="flex justify-between items-center text-[11px] text-text-tertiary font-normal">
+          <div className="flex items-center gap-2">
+            <span>Vol: ${totalVolumeK}k</span>
+            {market.isAiGenerated && (
+              <span className="flex items-center gap-1 px-2 rounded-full bg-brand-accent/10 text-brand-accent border border-brand-accent/40 text-[10px] uppercase font-semibold">
+                <Sparkles size={12} />
+                AI
+              </span>
+            )}
+          </div>
           <div className="flex items-center gap-3 text-text-secondary">
             <div className="flex items-center gap-1">
               <Heart size={13} className="text-market-no" />

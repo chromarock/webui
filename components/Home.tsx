@@ -40,39 +40,6 @@ export const Home: React.FC<HomeProps> = ({
 
   return (
     <div className="max-w-7xl mx-auto space-y-8 animate-fade-in">
-      {/* Stats (hero removed per request) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="bg-brand-surface border border-brand-border rounded-3xl p-5 flex flex-col justify-between hover:border-brand-accent/50 transition-colors shadow-[0_20px_45px_rgba(0,0,0,0.25)]">
-          <div className="flex justify-between items-start">
-            <span className="text-[10px] uppercase font-bold text-text-tertiary tracking-wide">
-              Net P&L (24h)
-            </span>
-            <DollarSign size={16} className="text-market-yes" />
-          </div>
-          <div className="text-2xl font-mono font-bold text-text-primary mt-2">
-            {user.isLoggedIn ? `+$${(user.pnlDay || 0).toFixed(2)}` : "---"}
-          </div>
-          <div className="w-full h-1.5 bg-brand-border mt-3 rounded-full overflow-hidden">
-            <div className="h-full bg-market-yes w-[65%]"></div>
-          </div>
-        </div>
-
-        <div className="bg-brand-surface border border-brand-border rounded-3xl p-5 flex flex-col justify-between hover:border-brand-accent/50 transition-colors shadow-[0_20px_45px_rgba(0,0,0,0.25)]">
-          <div className="flex justify-between items-start">
-            <span className="text-[10px] uppercase font-bold text-text-tertiary tracking-wide">
-              Win Rate
-            </span>
-            <Award size={16} className="text-brand-accent" />
-          </div>
-          <div className="text-2xl font-mono font-bold text-text-primary mt-2">
-            {user.isLoggedIn ? `${user.winRate || 0}%` : "---"}
-          </div>
-          <div className="w-full h-1.5 bg-brand-border mt-3 rounded-full overflow-hidden">
-            <div className="h-full bg-brand-accent w-[42%]"></div>
-          </div>
-        </div>
-      </div>
-
       {/* Main Feed */}
       <div>
         <div className="flex justify-between items-end mb-4">
@@ -86,7 +53,7 @@ export const Home: React.FC<HomeProps> = ({
             View All
           </button>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filtered.slice(0, 6).map((market) => (
             <MarketCard
               key={market.id}

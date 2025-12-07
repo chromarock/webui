@@ -163,9 +163,7 @@ export const Layout: React.FC<LayoutProps> = ({
     <div className="min-h-screen text-text-primary font-sans selection:bg-brand-accent/20 flex justify-center">
       <div
         className={`flex flex-col rounded-3xl backdrop-blur-xl min-h-screen w-full max-w-[1400px] ${
-          isDark
-            ? "bg-brand-darker/80"
-            : "bg-gradient-to-br from-white via-[#f7fbfd] to-white"
+          isDark ? "bg-brand-darker/80" : "bg-white"
         }`}
       >
         {/* Top Bar (sticky) */}
@@ -449,7 +447,7 @@ export const Layout: React.FC<LayoutProps> = ({
                             onClick={() => onHomeTopicChange?.(topic)}
                             className={`px-3 py-1.5 text-sm font-semibold rounded-full border transition-all flex-shrink-0 ${
                               isActive
-                                ? "bg-brand-accent text-white border-brand-accent"
+                                ? "bg-[#a33d001a] text-brand-accent border-[#eb9e33]"
                                 : "bg-brand-darker text-text-secondary border-brand-border hover:text-text-primary hover:border-brand-accent"
                             }`}
                           >

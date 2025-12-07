@@ -57,48 +57,43 @@ export const Explore: React.FC<ExploreProps> = ({
 
   return (
     <div className="max-w-7xl mx-auto space-y-8 animate-fade-in">
-      {/* Header Controls */}
-      <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-        <h1 className="text-3xl font-bold text-text-primary self-start md:self-center">
-          Explore
-        </h1>
-
-        {/* Search */}
-        <div className="relative w-full md:w-96">
-          <Search
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-text-tertiary"
-            size={16}
-          />
-          <input
-            type="text"
-            placeholder="Filter by keyword..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full bg-brand-surface border border-brand-border rounded-lg pl-10 pr-4 py-2 text-sm text-text-primary focus:border-brand-accent outline-none shadow-inner"
-          />
-        </div>
-      </div>
-
       {/* Filters & Toggles */}
       <div className="flex flex-col md:flex-row justify-between items-center gap-4 pb-4 border-b border-brand-border">
-        <div className="flex gap-2 overflow-x-auto scrollbar-hide w-full flex-nowrap md:flex-wrap md:overflow-visible">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setCategoryFilter(cat)}
-              className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all flex-shrink-0 ${
-                categoryFilter === cat
-                  ? "bg-brand-accent text-white shadow-md shadow-brand-accent/30"
-                  : "bg-brand-surface border border-brand-border text-text-secondary hover:text-text-primary hover:border-brand-accent"
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
+        <div className="flex items-center w-full gap-3 flex-wrap md:flex-nowrap">
+          {/* Search */}
+          <div className="relative w-full md:w-72">
+            <Search
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-text-tertiary"
+              size={16}
+            />
+            <input
+              type="text"
+              placeholder="Filter by keyword..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full bg-brand-surface border border-brand-border rounded-lg pl-10 pr-4 py-2 text-sm text-text-primary focus:border-brand-accent outline-none shadow-inner"
+            />
+          </div>
+
+          <div className="flex gap-2 overflow-x-auto scrollbar-hide w-full flex-nowrap md:flex-wrap md:overflow-visible">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setCategoryFilter(cat)}
+                className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all flex-shrink-0 ${
+                  categoryFilter === cat
+                    ? "bg-brand-accent text-white shadow-md shadow-brand-accent/30"
+                    : "bg-brand-surface border border-brand-border text-text-secondary hover:text-text-primary hover:border-brand-accent"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
         </div>
 
-        <div className="flex items-center justify-between w-full md:w-auto gap-3">
-          <div className="bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-text-secondary shadow-inner flex-shrink-0">
+        <div className="flex items-center justify-end w-full md:w-auto gap-3">
+          <div className="flex items-center gap-3 bg-brand-surface border border-brand-border rounded-lg px-3 py-2 text-xs text-text-secondary shadow-inner flex-shrink-0">
             <label className="mr-2 font-semibold">Sort</label>
             <select
               value={sortBy}
@@ -110,29 +105,28 @@ export const Explore: React.FC<ExploreProps> = ({
               <option value="probability">Prob %</option>
               <option value="endingSoon">Ending soon</option>
             </select>
-          </div>
-
-          <div className="flex bg-brand-surface border border-brand-border rounded-lg p-1 shadow-inner flex-shrink-0 ml-auto md:ml-0">
-            <button
-              onClick={() => setViewMode("grid")}
-              className={`p-1.5 rounded ${
-                viewMode === "grid"
-                  ? "bg-brand-border text-text-primary"
-                  : "text-text-tertiary hover:text-text-primary"
-              }`}
-            >
-              <LayoutGrid size={16} />
-            </button>
-            <button
-              onClick={() => setViewMode("list")}
-              className={`p-1.5 rounded ${
-                viewMode === "list"
-                  ? "bg-brand-border text-text-primary"
-                  : "text-text-tertiary hover:text-text-primary"
-              }`}
-            >
-              <ListIcon size={16} />
-            </button>
+            <div className="flex bg-brand-surface border border-brand-border rounded-lg p-1 shadow-inner flex-shrink-0">
+              <button
+                onClick={() => setViewMode("grid")}
+                className={`p-1.5 rounded ${
+                  viewMode === "grid"
+                    ? "bg-brand-border text-text-primary"
+                    : "text-text-tertiary hover:text-text-primary"
+                }`}
+              >
+                <LayoutGrid size={16} />
+              </button>
+              <button
+                onClick={() => setViewMode("list")}
+                className={`p-1.5 rounded ${
+                  viewMode === "list"
+                    ? "bg-brand-border text-text-primary"
+                    : "text-text-tertiary hover:text-text-primary"
+                }`}
+              >
+                <ListIcon size={16} />
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -141,7 +135,7 @@ export const Explore: React.FC<ExploreProps> = ({
       <div
         className={
           viewMode === "grid"
-            ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
             : "space-y-3"
         }
       >

@@ -73,7 +73,7 @@ export const generateMarketFromTopic = async (
         ? `https://picsum.photos/400/300?random=${Math.floor(
             Math.random() * 1000
           )}`
-        : `https://picsum.photos/400/300?grayscale&random=${Math.floor(
+        : `https://picsum.photos/400/300?random=${Math.floor(
             Math.random() * 1000
           )}`,
       probability: data.probability,
@@ -213,7 +213,7 @@ export const suggestTrendingMarkets = async (): Promise<Market[]> => {
       id: crypto.randomUUID(),
       title: item.title,
       description: item.description,
-      imageUrl: `https://picsum.photos/400/300?grayscale&random=${Math.floor(
+      imageUrl: `https://picsum.photos/400/300?random=${Math.floor(
         Math.random() * 1000
       )}`,
       probability: item.probability,

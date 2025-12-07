@@ -19,7 +19,7 @@ const INITIAL_MARKETS: Market[] = [
     title: "Fed Interest Rate Decision: March 2025",
     description:
       "Will the Federal Reserve cut interest rates at the March meeting? Current economic indicators suggest a cooling inflation rate, but labor markets remain tight.",
-    imageUrl: "https://picsum.photos/400/300?grayscale&random=1",
+    imageUrl: "https://picsum.photos/400/300?random=1",
     probability: 65,
     volume: 1250000,
     category: "Economics",
@@ -33,11 +33,60 @@ const INITIAL_MARKETS: Market[] = [
     bearCase: ["Fed Chair signals caution", "Oil prices rising"],
   },
   {
+    id: "14",
+    title: "Which countries will Trump visit in 2025?",
+    description:
+      "Predict the first international trips on the calendar for 2025. Each country has its own odds.",
+    imageUrl: "https://picsum.photos/400/300?random=14",
+    probability: 64, // lead choice probability for compatibility
+    volume: 980000,
+    category: "Politics",
+    endDate: "2025-12-31",
+    history: [35, 42, 44, 50, 53, 60, 64],
+    isAiGenerated: true,
+    type: "global",
+    mode: "multi",
+    choices: [
+      {
+        id: "china",
+        label: "China",
+        probability: 64,
+        description: "Trade reset speculation lifts odds.",
+      },
+      {
+        id: "india",
+        label: "India",
+        probability: 48,
+        description: "Quad summit window in late Q2.",
+      },
+      {
+        id: "denmark",
+        label: "Denmark",
+        probability: 22,
+        description: "NATO and Greenland chatter.",
+      },
+      {
+        id: "uae",
+        label: "UAE",
+        probability: 31,
+        description: "Energy and investment forum invite.",
+      },
+      {
+        id: "mexico",
+        label: "Mexico",
+        probability: 40,
+        description: "Border negotiations headline agenda.",
+      },
+    ],
+    aiInsight:
+      "Itinerary chatter points to Asia-first, with India and China leading whispers; Europe stops look lower probability unless tied to NATO summitry.",
+  },
+  {
     id: "2",
     title: "Bitcoin above $100k by Q3 2025",
     description:
       "Will Bitcoin trade above $100,000 USD on any major exchange before July 1st, 2025?",
-    imageUrl: "https://picsum.photos/400/300?grayscale&random=2",
+    imageUrl: "https://picsum.photos/400/300?random=2",
     probability: 32,
     volume: 4500000,
     category: "Crypto",
@@ -70,7 +119,7 @@ const INITIAL_MARKETS: Market[] = [
     title: "US presidential approval above 50% in June 2025",
     description:
       "Will the sitting US president record a Gallup approval rating above 50% at any point in June 2025?",
-    imageUrl: "https://picsum.photos/400/300?grayscale&random=4",
+    imageUrl: "https://picsum.photos/400/300?random=4",
     probability: 41,
     volume: 780000,
     category: "Politics",
@@ -94,7 +143,7 @@ const INITIAL_MARKETS: Market[] = [
     title: "OpenAI ships GPT-5 API by August 2025",
     description:
       "Will OpenAI publicly release a GPT-5 API endpoint for developers before August 31, 2025?",
-    imageUrl: "https://picsum.photos/400/300?grayscale&random=5",
+    imageUrl: "https://picsum.photos/400/300?random=5",
     probability: 58,
     volume: 1320000,
     category: "Tech",
@@ -115,7 +164,7 @@ const INITIAL_MARKETS: Market[] = [
     title: "Ethereum trades above $5k before May 2025",
     description:
       "Will ETH print a daily close above $5,000 on any major exchange before May 1, 2025?",
-    imageUrl: "https://picsum.photos/400/300?grayscale&random=6",
+    imageUrl: "https://picsum.photos/400/300?random=6",
     probability: 37,
     volume: 2120000,
     category: "Crypto",
@@ -133,7 +182,7 @@ const INITIAL_MARKETS: Market[] = [
     title: "SpaceX Starship reflies the same booster in 2025",
     description:
       "Will SpaceX achieve a successful Starship launch using a previously flown Super Heavy booster before December 31, 2025?",
-    imageUrl: "https://picsum.photos/400/300?grayscale&random=7",
+    imageUrl: "https://picsum.photos/400/300?random=7",
     probability: 62,
     volume: 960000,
     category: "Science",
@@ -151,7 +200,7 @@ const INITIAL_MARKETS: Market[] = [
     title: "Apple announces Vision Pro 2 at WWDC 2025",
     description:
       "Will Apple preview or announce a second-generation Vision Pro headset during WWDC 2025?",
-    imageUrl: "https://picsum.photos/400/300?grayscale&random=8",
+    imageUrl: "https://picsum.photos/400/300?random=8",
     probability: 54,
     volume: 540000,
     category: "Tech",
@@ -169,7 +218,7 @@ const INITIAL_MARKETS: Market[] = [
     title: "Global CPI inflation falls below 2.5% YoY by Dec 2025",
     description:
       "Will aggregated G20 CPI inflation land under 2.5% year-over-year by the December 2025 print?",
-    imageUrl: "https://picsum.photos/400/300?grayscale&random=9",
+    imageUrl: "https://picsum.photos/400/300?random=9",
     probability: 36,
     volume: 880000,
     category: "Economics",
@@ -187,7 +236,7 @@ const INITIAL_MARKETS: Market[] = [
     title: "Los Angeles Lakers reach the 2025 NBA Finals",
     description:
       "Will the Lakers win the Western Conference and appear in the 2025 NBA Finals?",
-    imageUrl: "https://picsum.photos/400/300?grayscale&random=10",
+    imageUrl: "https://picsum.photos/400/300?random=10",
     probability: 28,
     volume: 350000,
     category: "Sports",
@@ -205,7 +254,7 @@ const INITIAL_MARKETS: Market[] = [
     title: "EU AI Act enforcement begins before Q4 2025",
     description:
       "Will core enforcement provisions of the EU AI Act be in effect before October 1, 2025?",
-    imageUrl: "https://picsum.photos/400/300?grayscale&random=11",
+    imageUrl: "https://picsum.photos/400/300?random=11",
     probability: 52,
     volume: 610000,
     category: "Politics",
@@ -223,7 +272,7 @@ const INITIAL_MARKETS: Market[] = [
     title: "NVIDIA guides FY2026 revenue above $120B",
     description:
       "Will NVIDIA issue FY2026 revenue guidance exceeding $120 billion in its next full-year outlook?",
-    imageUrl: "https://picsum.photos/400/300?grayscale&random=12",
+    imageUrl: "https://picsum.photos/400/300?random=12",
     probability: 57,
     volume: 1750000,
     category: "Tech",
@@ -241,7 +290,7 @@ const INITIAL_MARKETS: Market[] = [
     title: "India flies a crewed Gaganyaan mission before 2026",
     description:
       "Will ISRO complete its first crewed Gaganyaan orbital mission before January 1, 2026?",
-    imageUrl: "https://picsum.photos/400/300?grayscale&random=13",
+    imageUrl: "https://picsum.photos/400/300?random=13",
     probability: 35,
     volume: 420000,
     category: "Science",
@@ -253,6 +302,54 @@ const INITIAL_MARKETS: Market[] = [
       "Pad abort tests are promising, but crew module life-support timelines keep odds under 40%.",
     bullCase: ["Successful uncrewed re-entry", "Budget approvals intact"],
     bearCase: ["Schedule slips on escape system", "Supplier delays"],
+  },
+  {
+    id: "15",
+    title: "US economy enters a recession in 2025",
+    description:
+      "Will the NBER declare a recession with a 2025 start date by year-end revisions?",
+    imageUrl: "https://picsum.photos/400/300?random=15",
+    probability: 38,
+    volume: 1500000,
+    category: "Economics",
+    endDate: "2025-12-31",
+    history: [28, 30, 32, 31, 35, 36, 38],
+    isAiGenerated: true,
+    type: "global",
+    aiInsight:
+      "Goods disinflation helps, but rising unemployment claims and tighter credit keep downside odds elevated.",
+  },
+  {
+    id: "16",
+    title: "SEC approves a spot ETH ETF by June 2025",
+    description:
+      "Will the SEC approve any spot Ethereum ETF application before June 30, 2025?",
+    imageUrl: "https://picsum.photos/400/300?random=16",
+    probability: 47,
+    volume: 2200000,
+    category: "Crypto",
+    endDate: "2025-06-30",
+    history: [34, 38, 40, 42, 45, 47],
+    isAiGenerated: true,
+    type: "global",
+    aiInsight:
+      "Court precedent narrows denial options, but staking clarity and market structure questions keep odds under 50%.",
+  },
+  {
+    id: "17",
+    title: "Apple hits a $4T market cap in 2025",
+    description:
+      "Will Apple close any trading day in 2025 with a market capitalization above $4 trillion?",
+    imageUrl: "https://picsum.photos/400/300?random=17",
+    probability: 29,
+    volume: 1800000,
+    category: "Tech",
+    endDate: "2025-12-31",
+    history: [20, 22, 24, 26, 27, 29],
+    isAiGenerated: true,
+    type: "global",
+    aiInsight:
+      "Vision Pro ramp and AI features help sentiment, but valuation and hardware cycle risk cap upside.",
   },
 ];
 

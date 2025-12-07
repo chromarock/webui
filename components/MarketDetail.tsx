@@ -44,6 +44,7 @@ export const MarketDetail: React.FC<MarketDetailProps> = ({
   const priceDelta = currentPrice - startPrice;
   const priceDeltaPct =
     startPrice === 0 ? 0 : ((priceDelta / startPrice) * 100).toFixed(1);
+  const isMulti = market.mode === "multi" && (market.choices?.length || 0) > 0;
   const [outcome, setOutcome] = useState<"YES" | "NO">("YES");
   const [amount, setAmount] = useState<string>("");
   const [activeTab, setActiveTab] = useState<"Overview" | "Activity">(
@@ -469,6 +470,55 @@ export const MarketDetail: React.FC<MarketDetailProps> = ({
           <div className="min-h-[200px]">
             {activeTab === "Overview" ? (
               <div className="space-y-6 animate-fade-in">
+                {isMulti && market.choices && (
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs uppercase font-bold text-text-tertiary">
+                        All choices
+                      </span>
+                      <span className="text-[11px] text-text-secondary">
+                        {market.choices.length} options · tap a card to trade
+                      </span>
+                    </div>
+                    <div className="space-y-3">
+                      {market.choices.map((choice) => (
+                        <div
+                          key={choice.id}
+                          className="bg-brand-surface border border-brand-border rounded-lg p-3 shadow-sm"
+                        >
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="text-sm font-semibold text-text-primary">
+                              {choice.label}
+                            </span>
+                            <span className="text-sm font-mono font-bold text-text-primary">
+                              {choice.probability}%
+                            </span>
+                          </div>
+                          <div className="relative h-2 bg-brand-darker rounded-full overflow-hidden mt-2">
+                            <div
+                              className="absolute left-0 top-0 h-full bg-market-yes"
+                              style={{ width: `${choice.probability}%` }}
+                            />
+                          </div>
+                          <div className="flex gap-2 mt-2 text-xs font-semibold">
+                            <span className="px-2 py-1 rounded bg-market-yes/10 text-market-yes border border-market-yes/30">
+                              Yes {choice.probability}%
+                            </span>
+                            <span className="px-2 py-1 rounded bg-market-no/10 text-market-no border border-market-no/30">
+                              No {100 - choice.probability}%
+                            </span>
+                          </div>
+                          {choice.description && (
+                            <p className="text-xs text-text-secondary mt-2">
+                              {choice.description}
+                            </p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 <p className="text-text-secondary leading-relaxed text-lg">
                   {market.description}
                 </p>

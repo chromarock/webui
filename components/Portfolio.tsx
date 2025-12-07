@@ -75,13 +75,24 @@ export const Portfolio: React.FC<PortfolioProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-brand-surface border border-brand-border rounded-xl p-6">
           <span className="text-xs uppercase font-bold text-text-tertiary">
-            Total Value
+            Net P&L (24h)
           </span>
           <div className="text-3xl font-mono font-bold text-text-primary mt-2">
-            $4,320.50
+            {user.isLoggedIn ? `+$${(user.pnlDay || 0).toFixed(2)}` : "---"}
           </div>
           <div className="text-xs text-market-yes mt-1 flex items-center">
-            <ArrowUpRight size={12} className="mr-1" /> +12.4% this month
+            <ArrowUpRight size={12} className="mr-1" /> 24h change
+          </div>
+        </div>
+        <div className="bg-brand-surface border border-brand-border rounded-xl p-6">
+          <span className="text-xs uppercase font-bold text-text-tertiary">
+            Win Rate
+          </span>
+          <div className="text-3xl font-mono font-bold text-text-primary mt-2">
+            {user.isLoggedIn ? `${user.winRate || 0}%` : "---"}
+          </div>
+          <div className="w-full h-1.5 bg-brand-border mt-3 rounded-full overflow-hidden">
+            <div className="h-full bg-brand-accent" style={{ width: `${user.winRate || 0}%` }}></div>
           </div>
         </div>
         <div className="bg-brand-surface border border-brand-border rounded-xl p-6">
@@ -90,17 +101,6 @@ export const Portfolio: React.FC<PortfolioProps> = ({
           </span>
           <div className="text-3xl font-mono font-bold text-text-primary mt-2">
             ${user.balance.toFixed(2)}
-          </div>
-        </div>
-        <div className="bg-brand-surface border border-brand-border rounded-xl p-6">
-          <span className="text-xs uppercase font-bold text-text-tertiary">
-            Accuracy Score
-          </span>
-          <div className="text-3xl font-mono font-bold text-brand-accent mt-2">
-            78/100
-          </div>
-          <div className="text-xs text-text-tertiary mt-1">
-            Top 15% of traders
           </div>
         </div>
       </div>
