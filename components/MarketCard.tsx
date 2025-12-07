@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Market } from "../types";
-import { Sparkles, Heart, Share2, Plus } from "lucide-react";
+import { Sparkles, Heart, Users, Plus, RefreshCw } from "lucide-react";
 
 interface MarketCardProps {
   market: Market;
@@ -15,6 +15,9 @@ export const MarketCard: React.FC<MarketCardProps> = ({
   onClick,
   onQuickTrade,
 }) => {
+  const refreshCadence = market.refreshCadence || "daily";
+  const refreshLabel =
+    refreshCadence.charAt(0).toUpperCase() + refreshCadence.slice(1);
   const yesProb = market.probability;
   const noProb = Math.max(0, 100 - yesProb);
   const totalVolumeK = (market.volume / 1000).toFixed(1);
@@ -49,7 +52,9 @@ export const MarketCard: React.FC<MarketCardProps> = ({
               <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-green-500 border border-brand-surface shadow" />
             </div>
             <div className="space-y">
-              <div className="flex items-center gap-2 text-[10px] uppercase text-text-tertiary tracking-wide"></div>
+              <div className="flex items-center gap-2 text-[10px] uppercase text-text-tertiary tracking-wide">
+                <span className="font-semibold">{market.category}</span>
+              </div>
               <h3 className="text-sm sm:text-base text-text-primary leading-tight line-clamp-2 group-hover:text-brand-accent transition-colors">
                 {market.title}
               </h3>
@@ -84,7 +89,7 @@ export const MarketCard: React.FC<MarketCardProps> = ({
                   <span className="text-xs text-text-secondary shrink-0">
                     {choice.probability}%
                   </span>
-                  <div className="flex-1 rounded-lg px-3 py-1 text-xs font-normal text-center bg-[#00ff331a] text-[#00ff33]">
+                  <div className="flex-1 rounded-lg px-3 py-1 text-xs font-normal text-center bg-[#02B8241a] text-[#02B824]">
                     Yes
                   </div>
                   <div className="flex-1 rounded-lg px-3 py-1 text-xs font-normal text-center bg-[#f90e1f1a] text-[#f90e1f]">
@@ -102,9 +107,9 @@ export const MarketCard: React.FC<MarketCardProps> = ({
                   e.stopPropagation();
                   onQuickTrade?.(market, "YES");
                 }}
-                className="rounded-xl px-3 py-3 transition-colors flex flex-col items-center justify-center gap-1 bg-[#00ff331a] hover:bg-[#00ff3333]"
+                className="rounded-xl px-3 py-3 transition-colors flex flex-col items-center justify-center gap-1 bg-[#02B8241a] hover:bg-[#02B82433]"
               >
-                <div className="text-sm font-semibold text-[#00ff33]">Yes</div>
+                <div className="text-sm font-semibold text-[#02B824]">Yes</div>
               </button>
               <button
                 onClick={(e) => {
@@ -119,13 +124,13 @@ export const MarketCard: React.FC<MarketCardProps> = ({
             <div className="grid grid-cols-2 gap-3 text-xs text-text-secondary font-semibold text-center">
               <div className="flex items-center justify-center gap-2 px-1">
                 <span>${previewStake}</span>
-                <span className="text-sm font-semibold text-[#00ff33b3]">
+                <span className="text-sm font-semibold text-[#02B824]">
                   → ${previewReturn(yesProb)}
                 </span>
               </div>
               <div className="flex items-center justify-center gap-2 px-1">
                 <span>${previewStake}</span>
-                <span className="text-sm font-semibold text-[#00ff33b3]">
+                <span className="text-sm font-semibold text-[#02B824]">
                   → ${previewReturn(noProb)}
                 </span>
               </div>
@@ -139,6 +144,10 @@ export const MarketCard: React.FC<MarketCardProps> = ({
         <div className="flex justify-between items-center text-[11px] text-text-tertiary font-normal">
           <div className="flex items-center gap-2">
             <span>Vol: ${totalVolumeK}k</span>
+            <span className="flex items-center gap-1 px-2 rounded-full border border-brand-border text-[10px] font-semibold text-text-secondary bg-brand-surface">
+              <RefreshCw size={12} className="text-text-tertiary" />
+              {refreshLabel.toUpperCase()}
+            </span>
             {market.isAiGenerated && (
               <span className="flex items-center gap-1 px-2 rounded-full bg-brand-accent/10 text-brand-accent border border-brand-accent/40 text-[10px] uppercase font-semibold">
                 <Sparkles size={12} />
@@ -148,11 +157,7 @@ export const MarketCard: React.FC<MarketCardProps> = ({
           </div>
           <div className="flex items-center gap-3 text-text-secondary">
             <div className="flex items-center gap-1">
-              <Heart size={13} className="text-market-no" />
-              <span>12.4k</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <Share2 size={13} />
+              <Users size={13} />
               <span>9.2k</span>
             </div>
           </div>

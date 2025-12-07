@@ -12,6 +12,7 @@ import {
   ArrowDownRight,
   Info,
   AlertTriangle,
+  RefreshCcw,
 } from "lucide-react";
 
 interface MarketDetailProps {
@@ -92,6 +93,9 @@ export const MarketDetail: React.FC<MarketDetailProps> = ({
   const roi = amount
     ? ((potentialProfit / parseFloat(amount)) * 100).toFixed(1)
     : "0.0";
+  const refreshCadence = market.refreshCadence || "daily";
+  const refreshLabel =
+    refreshCadence.charAt(0).toUpperCase() + refreshCadence.slice(1);
 
   const handleTrade = () => {
     if (!user.isLoggedIn) return onRequestLogin();
@@ -351,6 +355,10 @@ export const MarketDetail: React.FC<MarketDetailProps> = ({
               </span>
               <span className="px-2 py-1 bg-brand-surface text-text-secondary text-xs font-bold rounded border border-brand-border">
                 Ends {market.endDate}
+              </span>
+              <span className="px-2 py-1 bg-brand-surface text-text-secondary text-xs font-bold rounded border border-brand-border flex items-center gap-1">
+                <RefreshCcw size={14} className="text-text-tertiary" />
+                {refreshLabel} refresh
               </span>
             </div>
           </div>

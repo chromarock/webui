@@ -16,6 +16,7 @@ export interface Market {
   bearCase?: string[]; // List of arguments for NO
   mode?: "binary" | "multi"; // binary by default
   choices?: MarketChoice[]; // for multi-outcome markets
+  refreshCadence?: "hourly" | "daily" | "weekly";
 }
 
 export interface PortfolioItem {
