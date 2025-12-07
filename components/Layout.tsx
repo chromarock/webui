@@ -98,7 +98,7 @@ export const Layout: React.FC<LayoutProps> = ({
   const newsNavItems = useMemo(
     () => [
       "Trending",
-      "Breaking",
+      "All",
       "New",
       "|",
       "Politics",
@@ -117,6 +117,19 @@ export const Layout: React.FC<LayoutProps> = ({
     ],
     []
   );
+  const activeNewsItem =
+    currentView === ViewState.HOME
+      ? "Trending"
+      : currentView === ViewState.EXPLORE
+      ? "All"
+      : "";
+  const handleNewsNavClick = (item: string) => {
+    if (item === "Trending") {
+      onChangeView(ViewState.HOME);
+    } else if (item === "All") {
+      onChangeView(ViewState.EXPLORE);
+    }
+  };
 
   const updatePillScrollState = useCallback(() => {
     const el = pillScrollerRef.current;
@@ -391,8 +404,9 @@ export const Layout: React.FC<LayoutProps> = ({
                 ) : (
                   <button
                     key={item}
+                    onClick={() => handleNewsNavClick(item)}
                     className={`transition-colors ${
-                      item === "Trending"
+                      item === activeNewsItem
                         ? "text-text-primary font-semibold"
                         : "hover:text-text-primary"
                     }`}
@@ -415,9 +429,9 @@ export const Layout: React.FC<LayoutProps> = ({
           {isHome && (
             <div>
               <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 space-y-3 lg:space-y-0">
-                <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:gap-3 w-full">
-                  <div className="flex items-center gap-3 w-full overflow-x-auto scrollbar-hide flex-nowrap lg:flex-nowrap lg:overflow-visible lg:w-auto">
-                    <div className="flex items-center min-w-[260px] bg-brand-darker border border-brand-border rounded-xl px-3 py-2 flex-1 w-full lg:flex-[2] lg:min-w-[320px]">
+                <div className="flex flex-wrap items-center gap-3 w-full">
+                  <div className="flex items-center gap-3 flex-1 min-w-[100px] max-w-lg">
+                    <div className="flex items-center bg-brand-darker border border-brand-border rounded-xl px-3 py-2 flex-1 min-w-[240px]">
                       <Search size={16} className="text-text-tertiary mr-2" />
                       <input
                         value={homeSearchTerm ?? ""}
@@ -433,9 +447,9 @@ export const Layout: React.FC<LayoutProps> = ({
                       <Bookmark size={18} />
                     </button>
                   </div>
-                  <div className="relative w-full lg:flex-1 lg:max-w-[70%]">
+                  <div className="relative flex-1 min-w-[320px]">
                     <div
-                      className="flex items-center gap-2 flex-nowrap overflow-x-auto scrollbar-hide pr-14 lg:flex-nowrap lg:overflow-x-auto"
+                      className="flex items-center gap-2 flex-nowrap overflow-x-auto scrollbar-hide pr-14"
                       ref={pillScrollerRef}
                       onScroll={updatePillScrollState}
                     >

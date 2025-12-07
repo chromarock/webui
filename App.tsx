@@ -494,7 +494,6 @@ function App() {
             markets={markets}
             user={user}
             onMarketClick={handleMarketClick}
-            onExplore={() => setView(ViewState.EXPLORE)}
             searchTerm={homeSearchTerm}
             activeTopic={homeActiveTopic}
             onQuickTrade={handleQuickTrade}
@@ -555,7 +554,6 @@ function App() {
             markets={markets}
             user={user}
             onMarketClick={handleMarketClick}
-            onExplore={() => setView(ViewState.EXPLORE)}
             searchTerm={homeSearchTerm}
             activeTopic={homeActiveTopic}
             onQuickTrade={handleQuickTrade}
