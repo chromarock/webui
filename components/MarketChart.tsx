@@ -83,6 +83,7 @@ export const MarketChart: React.FC<MarketChartProps> = ({
       </div>
     );
   };
+  renderTooltip.displayName = "MarketChartTooltip";
 
   const renderHoverLabel =
     (color: string, label: string, dy = -6) =>
@@ -103,6 +104,7 @@ export const MarketChart: React.FC<MarketChartProps> = ({
         </g>
       );
     };
+  renderHoverLabel.displayName = "MarketChartHoverLabel";
 
   if (!mounted) {
     return (
