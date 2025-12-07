@@ -90,6 +90,7 @@ export const Layout: React.FC<LayoutProps> = ({
   );
   const pillScrollerRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const mobileDropdownRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -146,12 +147,13 @@ export const Layout: React.FC<LayoutProps> = ({
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (!isMenuOpen) return;
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsMenuOpen(false);
-      }
+      const target = event.target as Node;
+      const outsideDesktop =
+        dropdownRef.current && dropdownRef.current.contains(target);
+      const outsideMobile =
+        mobileDropdownRef.current && mobileDropdownRef.current.contains(target);
+      if (outsideDesktop || outsideMobile) return;
+      setIsMenuOpen(false);
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
@@ -247,6 +249,39 @@ export const Layout: React.FC<LayoutProps> = ({
                     </button>
                   </>
                 )}
+                <div className="relative" ref={mobileDropdownRef}>
+                  <Button
+                    onClick={() => setIsMenuOpen((open) => !open)}
+                    size="sm"
+                    variant="ghost"
+                    aria-label="Open menu"
+                    className="px-2 py-2"
+                  >
+                    <Menu size={18} />
+                  </Button>
+                  {isMenuOpen && (
+                    <div className="absolute right-0 mt-2 w-40 rounded-xl border border-brand-border bg-brand-surface shadow-xl backdrop-blur-md p-1 z-50">
+                      <button
+                        onClick={() => {
+                          setIsMenuOpen(false);
+                          onChangeView(ViewState.EXPLORE);
+                        }}
+                        className="w-full text-left px-3 py-2 rounded-lg text-xs text-text-primary hover:bg-brand-darker transition-colors"
+                      >
+                        Leaderboard
+                      </button>
+                      <button
+                        onClick={() => {
+                          setIsMenuOpen(false);
+                          onToggleTheme();
+                        }}
+                        className="w-full text-left px-3 py-2 rounded-lg text-xs text-text-primary hover:bg-brand-darker transition-colors"
+                      >
+                        {theme === "dark" ? "Light mode" : "Dark mode"}
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Search (hidden on mobile) */}
