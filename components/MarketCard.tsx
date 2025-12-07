@@ -37,7 +37,7 @@ export const MarketCard: React.FC<MarketCardProps> = ({
       onClick={() => onClick(market)}
       className="group relative bg-brand-surface border border-brand-border rounded-2xl overflow-hidden cursor-pointer hover:border-brand-accent/60 transition-all duration-200 hover:shadow-2xl hover:-translate-y-1 flex flex-col h-full"
     >
-      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-brand-accent to-brand-accent-2 opacity-100"></div>
+      <div className="absolute inset-x-0 top-0 h-1"></div>
 
       <div className="p-4 space-y-4 flex-1">
         {/* Header */}
