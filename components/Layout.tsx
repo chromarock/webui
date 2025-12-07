@@ -296,8 +296,8 @@ export const Layout: React.FC<LayoutProps> = ({
               </div>
 
               {/* Search (hidden on mobile) */}
-              <div className="hidden sm:flex items-center gap-2 flex-1 min-w-0 w-full sm:w-auto flex-wrap sm:flex-nowrap">
-                <div className="flex items-center bg-brand-surface border border-brand-border rounded-full px-3 py-2 shadow-inner w-full sm:flex-1 min-w-0">
+              <div className="hidden sm:flex items-center gap-2 ml-auto w-64 shrink-0">
+                <div className="flex items-center bg-brand-surface border border-brand-border rounded-full px-3 py-2 shadow-inner w-full">
                   <Search size={16} className="text-text-tertiary mr-2" />
                   <input
                     type="text"
@@ -349,15 +349,15 @@ export const Layout: React.FC<LayoutProps> = ({
                     <Button
                       onClick={() => onChangeView(ViewState.SIGNUP)}
                       size="sm"
-                      variant="primary"
+                      variant="pill"
                     >
                       Sign Up
                     </Button>
                   </>
                 )}
-                <Button variant="pill" size="sm">
+                {/* <Button variant="pill" size="sm">
                   Connect Wallet
-                </Button>
+                </Button> */}
                 <div className="relative" ref={dropdownRef}>
                   <Button
                     onClick={() => setIsMenuOpen((open) => !open)}
@@ -523,11 +523,11 @@ export const Layout: React.FC<LayoutProps> = ({
         {isMounted &&
           createPortal(
             <nav
-              className="lg:hidden fixed bottom-0 left-0 right-0 z-50 px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-2"
+              className="lg:hidden fixed bottom-0 left-0 right-0 z-50"
               aria-label="Primary navigation"
             >
               <div
-                className={`w-full max-w-md mx-auto px-3 py-2 rounded-full shadow-xl backdrop-blur-lg flex items-center gap-2 ${
+                className={`w-full max-w-full mx-auto px-3 py-2 rounded-full shadow-xl backdrop-blur-lg flex items-center gap-2 ${
                   isDark ? "bg-brand-darker/90" : "bg-white/95"
                 }`}
               >
